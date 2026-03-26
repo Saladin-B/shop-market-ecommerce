@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-4h&xkv-83nbf8kccb*c)u#wh!t&u(kya-3uu#%&0vl4v=#h9_m
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 # IMPORTANT: Must be a flat list, not a nested list
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = ["my-ecommerce-website-f0acd09379bc.herokuapp.com"] + config("ALLOWED_HOSTS", default="localhost,127.0.0.1", ).split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
