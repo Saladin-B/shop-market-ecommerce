@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4h&xkv-83nbf8kccb*c)u#wh!t&u(kya-3uu#%&0vl4v=#h9_m
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 # IMPORTANT: Must be a flat list, not a nested list
 ALLOWED_HOSTS = [
