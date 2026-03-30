@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4h&xkv-83nbf8kccb*c)u#wh!t&u(kya-3uu#%&0vl4v=#h9_m'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-4h&xkv-83nbf8kccb*c)u#wh!t&u(kya-3uu#%&0vl4v=#h9_m')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -144,7 +144,7 @@ DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 # Stripe
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY", default="")
-STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="")
+STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET", default="").encode('utf-8') if config("STRIPE_WEBHOOK_SECRET", default="") else b""
 
 # Twilio
 TWILIO_ACCOUNT_SID = config("TWILIO_ACCOUNT_SID", default="")
