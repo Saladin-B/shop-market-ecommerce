@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - {{ shop_owner.shop_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total Subscribers</h5>
+                <h2>{{ subscribers_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">Messages Sent</h5>
+                <h2>{{ recent_messages|length }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">Subscription Tier</h5>
+                <p class="text-capitalize">{{ shop_owner.subscription_tier }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <a href="{% url 'download_qr' shop_owner.id %}" class="btn btn-sm btn-primary">Download QR Code</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Messages</h5>
+            </div>
+            <div class="card-body">
+                {% for message in recent_messages %}
+                    <div class="border-bottom pb-2 mb-2">
+                        <small class="text-muted">{{ message.created_at|date:"M d, Y" }}</small>
+                        <p>{{ message.content|truncatewords:10 }}</p>
+                        <span class="badge bg-info">{{ message.message_type|upper }}</span>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">No messages yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'send_message' %}" class="btn btn-primary btn-block mb-2">Send Message</a>
+                <a href="{% url 'view_subscribers' %}" class="btn btn-secondary btn-block mb-2">View Subscribers (Count)</a>
+                <a href="{% url 'manage_templates' %}" class="btn btn-info btn-block">Manage Templates</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
