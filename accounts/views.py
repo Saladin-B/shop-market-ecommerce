@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import ShopOwnerRegistrationForm
 from .models import ShopProfile
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("Accounts app")
 
 
 def register_view(request):
