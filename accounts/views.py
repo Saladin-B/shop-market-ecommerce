@@ -10,6 +10,33 @@ def index(request):
     return HttpResponse("Accounts app")
 
 
+def login_view(request):
+    """Handle shop owner login."""
+    if request.user.is_authenticated:
+        return redirect('dashboard:home')
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.username}!")
+            return redirect('dashboard:home')
+        else:
+            messages.error(request, "Invalid username or password.")
+    
+    return render(request, 'accounts/login.html')
+
+
+def logout_view(request):
+    """Handle shop owner logout."""
+    logout(request)
+    messages.success(request, "You have been logged out.")
+    return redirect('dashboard:home')
+
+
 def register_view(request):
     """Handle shop owner registration."""
     if request.user.is_authenticated:
