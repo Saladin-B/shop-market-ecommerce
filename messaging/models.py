@@ -1,5 +1,6 @@
 from django.db import models
-from accounts.models import ShopProfile
+from accounts.models import ShopProfile, CustomUser
+from django.utils import timezone
 
 
 class MessageTemplate(models.Model):
@@ -59,3 +60,48 @@ class MessageLog(models.Model):
 
     def __str__(self):
         return f"Log for message {self.message.id} - {self.status}"
+
+
+class DirectMessage(models.Model):
+    """Direct messages between users (customers, support, etc)."""
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sent_messages')
+    recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='received_messages')
+    content = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Message from {self.sender.username} to {self.recipient.username}"
+
+
+class Conversation(models.Model):
+    """Group conversations/support tickets."""
+    title = models.CharField(max_length=255)
+    participants = models.ManyToManyField(CustomUser, related_name='conversations')
+    created_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='created_conversations')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return self.title
+
+
+class ConversationMessage(models.Model):
+    """Messages within a conversation."""
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.sender.username} in {self.conversation.title}"
