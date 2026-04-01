@@ -51,7 +51,7 @@ def register_view(request):
         else:
             messages.error(request, "Please correct the errors below.")
     else:
-        form = ShopOwnerRegistrationForm()
+        form = CustomerRegistrationForm()
 
     return render(request, 'accounts/register.html', {'form': form})
 
