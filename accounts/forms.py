@@ -5,9 +5,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
 
-class ShopOwnerRegistrationForm(UserCreationForm):
-    """Registration form for shop owners."""
-    shop_name = forms.CharField(max_length=255, required=True)
+class CustomerRegistrationForm(UserCreationForm):
+    """Registration form for customers."""
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -20,7 +19,6 @@ class ShopOwnerRegistrationForm(UserCreationForm):
         self.helper.layout = Layout(
             Row(Column('username'), Column('email')),
             Row(Column('password1'), Column('password2')),
-            'shop_name',
             Submit('submit', 'Create Account', css_class='btn btn-primary w-100'),
         )
 
@@ -29,8 +27,4 @@ class ShopOwnerRegistrationForm(UserCreationForm):
         user.role = 'owner'
         if commit:
             user.save()
-            ShopProfile.objects.create(
-                owner=user,
-                shop_name=self.cleaned_data['shop_name']
-            )
         return user
