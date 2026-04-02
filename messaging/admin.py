@@ -1,22 +1,36 @@
 from django.contrib import admin
-from .models import MessageTemplate, Message, MessageLog, DirectMessage, Conversation, ConversationMessage
+from .models import (
+    Subscriber, MessageTemplate, Message, MessageLog, 
+    DirectMessage, Conversation, ConversationMessage, DeliveryReport
+)
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ['shop_profile', 'birth_month', 'is_active', 'subscribed_at']
+    list_filter = ['is_active', 'subscribed_at']
+    search_fields = ['shop_profile__shop_name']
 
 @admin.register(MessageTemplate)
 class MessageTemplateAdmin(admin.ModelAdmin):
-    list_display = ['name', 'shop', 'template_type', 'created_at']
-    list_filter = ['template_type', 'created_at']
-    search_fields = ['name', 'shop__shop_name']
+    list_display = ['name', 'shop_profile', 'category', 'created_at']
+    list_filter = ['category', 'created_at']
+    search_fields = ['name', 'shop_profile__shop_name']
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ['shop', 'status', 'channel', 'total_recipients', 'successful_deliveries', 'created_at']
-    list_filter = ['status', 'channel', 'created_at']
-    search_fields = ['shop__shop_name', 'content']
+    list_display = ['shop_profile', 'status', 'message_type', 'created_at']
+    list_filter = ['status', 'message_type', 'created_at']
+    search_fields = ['shop_profile__shop_name', 'content']
 
 @admin.register(MessageLog)
 class MessageLogAdmin(admin.ModelAdmin):
     list_display = ['message', 'status', 'channel', 'timestamp']
     list_filter = ['status', 'channel', 'timestamp']
+
+@admin.register(DeliveryReport)
+class DeliveryReportAdmin(admin.ModelAdmin):
+    list_display = ['message', 'total_sent', 'successful', 'failed', 'delivery_timestamp']
+    list_filter = ['delivery_timestamp']
 
 @admin.register(DirectMessage)
 class DirectMessageAdmin(admin.ModelAdmin):

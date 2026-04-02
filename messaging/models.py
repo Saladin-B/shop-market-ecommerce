@@ -1,6 +1,46 @@
 from django.db import models
 from accounts.models import ShopProfile, CustomUser
 from django.utils import timezone
+from django.conf import settings
+from cryptography.fernet import Fernet
+
+
+class Subscriber(models.Model):
+    """Subscriber model with encrypted phone numbers."""
+    shop_profile = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='subscribers')
+    phone_number_encrypted = models.CharField(max_length=255)  # Encrypted
+    birth_month = models.IntegerField(
+        choices=[(i, f'Month {i}') for i in range(1, 13)],
+        null=True,
+        blank=True
+    )
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+    unsubscribed_at = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('shop_profile', 'phone_number_encrypted')
+
+    def __str__(self):
+        return f"Subscriber of {self.shop_profile.shop_name}"
+
+    @staticmethod
+    def encrypt_phone(phone):
+        """Encrypt phone number using Fernet."""
+        try:
+            cipher = Fernet(settings.ENCRYPTION_KEY.encode())
+            return cipher.encrypt(phone.encode()).decode()
+        except Exception as e:
+            return phone
+
+    @staticmethod
+    def decrypt_phone(encrypted_phone):
+        """Decrypt phone number using Fernet."""
+        try:
+            cipher = Fernet(settings.ENCRYPTION_KEY.encode())
+            return cipher.decrypt(encrypted_phone.encode()).decode()
+        except Exception as e:
+            return encrypted_phone
 
 
 class MessageTemplate(models.Model):
@@ -11,18 +51,30 @@ class MessageTemplate(models.Model):
         ('event', 'Special Event'),
         ('custom', 'Custom'),
     ]
-    shop = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='templates')
+    CATEGORY_CHOICES = [
+        ('new_arrivals', 'New Arrivals'),
+        ('sale_alert', 'Sale Alert'),
+        ('promotional', 'Promotional'),
+        ('custom', 'Custom')
+    ]
+    shop_profile = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='templates')
     name = models.CharField(max_length=100)
-    template_type = models.CharField(max_length=20, choices=TEMPLATE_TYPES, default='custom')
     content = models.TextField()
+    template_type = models.CharField(max_length=20, choices=TEMPLATE_TYPES, default='custom')
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='custom')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.name} - {self.shop.shop_name}"
+        return f"{self.name} - {self.shop_profile.shop_name}"
 
 
 class Message(models.Model):
     """Represents a broadcast message sent or scheduled."""
+    MESSAGE_TYPE_CHOICES = [
+        ('sms', 'SMS'),
+        ('whatsapp', 'WhatsApp'),
+        ('both', 'SMS & WhatsApp'),
+    ]
     STATUS_CHOICES = [
         ('draft', 'Draft'),
         ('scheduled', 'Scheduled'),
@@ -30,24 +82,19 @@ class Message(models.Model):
         ('sent', 'Sent'),
         ('failed', 'Failed'),
     ]
-    CHANNEL_CHOICES = [
-        ('sms', 'SMS'),
-        ('whatsapp', 'WhatsApp'),
-        ('both', 'SMS & WhatsApp'),
-    ]
-    shop = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='messages')
+    shop_profile = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='messages')
     content = models.TextField(max_length=1600)
-    channel = models.CharField(max_length=20, choices=CHANNEL_CHOICES, default='sms')
+    message_type = models.CharField(max_length=20, choices=MESSAGE_TYPE_CHOICES, default='sms')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
-    scheduled_at = models.DateTimeField(null=True, blank=True)
-    sent_at = models.DateTimeField(null=True, blank=True)
-    total_recipients = models.IntegerField(default=0)
-    successful_deliveries = models.IntegerField(default=0)
-    failed_deliveries = models.IntegerField(default=0)
+    scheduled_for = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
-        return f"Message from {self.shop.shop_name} [{self.status}] on {self.created_at.date()}"
+        return f"{self.message_type.upper()} - {self.content[:50]}"
 
 
 class MessageLog(models.Model):
@@ -60,6 +107,19 @@ class MessageLog(models.Model):
 
     def __str__(self):
         return f"Log for message {self.message.id} - {self.status}"
+
+
+class DeliveryReport(models.Model):
+    """Delivery report for messages."""
+    message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name='delivery_report')
+    total_sent = models.IntegerField(default=0)
+    successful = models.IntegerField(default=0)
+    failed = models.IntegerField(default=0)
+    delivery_timestamp = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Report for message {self.message.id}"
 
 
 class DirectMessage(models.Model):

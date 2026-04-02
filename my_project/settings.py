@@ -27,6 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-4h&xkv-83nbf8kccb*c)u#wh!t&u(kya-3uu#%&0vl4v=#h9_m')
 
+# Encryption key for phone numbers
+ENCRYPTION_KEY = config('ENCRYPTION_KEY', default='VJAuPqVYLxRPDXlEq2d-p0v1QYmJZSX2rWpJKqS8gFE=')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
