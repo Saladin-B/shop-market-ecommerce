@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from .models import CustomUser, ShopProfile
 
 
@@ -36,9 +37,11 @@ class ShopProfileAdmin(admin.ModelAdmin):
         try:
             qr_code_data = obj.generate_qr_code()
             if qr_code_data:
-                return f'<img src="{qr_code_data}" width="200" height="200" />'
+                return format_html(
+                    '<img src="{}" width="200" height="200" />',
+                    qr_code_data
+                )
             return 'No QR code generated'
         except Exception as e:
             return f'Error: {str(e)}'
-    qr_code_display.allow_tags = True
     qr_code_display.short_description = 'QR Code'
