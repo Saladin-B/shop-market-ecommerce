@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "cloudinary",
     "cloudinary_storage",
+    "django_recaptcha",
 
     # Local
     "accounts",
@@ -173,3 +174,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # qr code generation
 SITE_URL = "http://127.0.0.1:8000"
+
+# Google reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY", default="")
+RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY", default="")

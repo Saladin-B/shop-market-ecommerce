@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Unsubscribed Successfully{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">You've Been Unsubscribed</h4>
+                    <p class="text-muted mb-2">You won't receive any more messages from {{ shop_name }}.</p>
+                    <p class="text-muted">We're sorry to see you go! You can re-subscribe anytime.</p>
+                    
+                    <div class="alert alert-info mt-4" role="alert">
+                        <i class="bi bi-info-circle"></i>
+                        If you have any feedback, please let us know how we can improve.
+                    </div>
+
+                    <a href="{% url 'dashboard:home' %}" class="btn btn-primary mt-3">
+                        <i class="bi bi-house"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 12px;
+    }
+    .btn-primary {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border: none;
+    }
+</style>
+{% endblock %}

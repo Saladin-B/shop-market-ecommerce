@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 import hashlib
 from accounts.models import ShopProfile
@@ -8,6 +9,7 @@ from subscribers.models import Subscriber
 from .forms import SubscriberForm
 
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def subscribe_page(request, shop_id):
     """Public page for customers to subscribe to shop messages."""

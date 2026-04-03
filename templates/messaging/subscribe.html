@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Subscribe to {{ shop_name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Subscribe to {{ shop_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">Get exclusive offers and updates from {{ shop_name }} via SMS and WhatsApp.</p>
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_phone_number" class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control {% if form.phone_number.errors %}is-invalid{% endif %}" 
+                                   id="id_phone_number" name="phone_number" 
+                                   placeholder="+1 (555) 123-4567" required>
+                            {% if form.phone_number.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.phone_number.errors }}
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted">We'll use this to send you SMS/WhatsApp messages.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_birth_month" class="form-label">Birth Month *</label>
+                            <select class="form-select {% if form.birth_month.errors %}is-invalid{% endif %}" 
+                                    id="id_birth_month" name="birth_month" required>
+                                <option value="">-- Select Month --</option>
+                                {% for value, label in form.fields.birth_month.widget.choices %}
+                                    {% if value %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            {% if form.birth_month.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.birth_month.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.captcha }}
+                            {% if form.captcha.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.captcha.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-bell-fill"></i> Subscribe Now
+                        </button>
+                    </form>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check"></i> Your phone number is encrypted and secure.
+                            We respect your privacy and will never share your information.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 12px;
+        border: none;
+    }
+    .card-header {
+        border-radius: 12px 12px 0 0;
+        padding: 1.5rem;
+    }
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+    }
+    .btn-primary {
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-weight: 600;
+        border: none;
+    }
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+</style>
+{% endblock %}
