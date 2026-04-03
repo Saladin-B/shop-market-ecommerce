@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Send Message to Subscribers{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-chat-dots"></i> Send Message to Subscribers
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if subscriber_count == 0 %}
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            You don't have any active subscribers yet. 
+                            <a href="{% url 'dashboard:home' %}">Generate a subscription QR code</a> to start building your subscriber list.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-info-circle"></i>
+                            Your message will be sent to <strong>{{ subscriber_count }}</strong> active subscriber{{ subscriber_count|pluralize }}.
+                        </div>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if templates %}
+                        <div class="mb-4">
+                            <label for="id_use_template" class="form-label">Use Saved Template (Optional)</label>
+                            {{ form.use_template }}
+                            <small class="form-text text-muted">
+                                Selecting a template will populate the message field.
+                            </small>
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="id_content" class="form-label">Message Content *</label>
+                            {{ form.content }}
+                            <small class="form-text text-muted" id="char-count">
+                                0 / 1600 characters
+                            </small>
+                            {% if form.content.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.content.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="id_message_type" class="form-label">Send Via *</label>
+                                    {{ form.message_type }}
+                                    {% if form.message_type.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.message_type.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="id_scheduled_for" class="form-label">Schedule (Optional)</label>
+                                    {{ form.scheduled_for }}
+                                    <small class="form-text text-muted">
+                                        Leave blank to send immediately
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            {% if subscriber_count > 0 %}
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-send"></i> Send Message
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary" disabled>
+                                    <i class="bi bi-send"></i> Send Message
+                                </button>
+                            {% endif %}
+                            <a href="{% url 'messaging:message_list' %}" class="btn btn-secondary">
+                                <i class="bi bi-list"></i> View History
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Quick Info</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Active Subscribers</small>
+                        <div class="h4 mb-0">{{ subscriber_count }}</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted">Saved Templates</small>
+                        <div class="h4 mb-0">{{ templates.count }}</div>
+                    </div>
+
+                    <hr>
+
+                    <h6>Message Tips:</h6>
+                    <ul class="small mb-0">
+                        <li>Keep messages under 160 characters for SMS</li>
+                        <li>Use WhatsApp for richer formatting</li>
+                        <li>Schedule messages for optimal timing</li>
+                        <li>Save templates for repeated messages</li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if templates %}
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Your Templates</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for template in templates %}
+                        <div class="list-group-item">
+                            <small class="text-muted">{{ template.get_category_display }}</small>
+                            <div class="fw-bold">{{ template.name }}</div>
+                            <small class="text-truncate d-block">{{ template.content }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('id_content').addEventListener('input', function() {
+    const charCount = this.value.length;
+    document.getElementById('char-count').textContent = charCount + ' / 1600 characters';
+    
+    if (charCount > 1600) {
+        this.classList.add('is-invalid');
+    } else {
+        this.classList.remove('is-invalid');
+    }
+});
+
+{% if templates %}
+document.getElementById('id_use_template').addEventListener('change', function() {
+    if (this.value) {
+        const templateId = this.value;
+        const templates = {{ templates_json|safe }};
+        const template = templates.find(t => t.id == templateId);
+        if (template) {
+            document.getElementById('id_content').value = template.content;
+            document.getElementById('id_content').dispatchEvent(new Event('input'));
+        }
+    }
+});
+{% endif %}
+</script>
+
+<style>
+    .card {
+        border-radius: 12px;
+        border: none;
+    }
+    .card-header {
+        border-radius: 12px 12px 0 0;
+    }
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    .btn {
+        border-radius: 8px;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}

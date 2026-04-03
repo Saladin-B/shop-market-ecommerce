@@ -1,12 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages as django_messages
 from django.utils import timezone
 import hashlib
 from accounts.models import ShopProfile
 from subscribers.models import Subscriber
-from .forms import SubscriberForm
+from .models import Message, DeliveryReport
+from .forms import SubscriberForm, MessageForm
 
 
 @login_required
@@ -81,3 +83,143 @@ def verify_unsubscribe_token(subscriber, token):
     import hashlib
     expected_token = hashlib.sha256(f"{subscriber.id}{subscriber.phone_number_encrypted}".encode()).hexdigest()
     return token == expected_token
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def send_message(request):
+    """Shop owner view to send broadcast messages to subscribers."""
+    # Get shop profile for current user
+    try:
+        shop_profile = request.user.shopprofile
+    except ShopProfile.DoesNotExist:
+        django_messages.error(request, 'You must have a shop profile to send messages.')
+        return redirect('dashboard:home')
+    
+    if request.method == 'POST':
+        form = MessageForm(request.POST, shop_profile=shop_profile)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.shop_profile = shop_profile
+            
+            # Check if template was selected
+            template_id = request.POST.get('use_template')
+            if template_id:
+                try:
+                    template = shop_profile.templates.get(id=template_id)
+                    message.content = template.content
+                except:
+                    pass
+            
+            # Set status based on schedule
+            if message.scheduled_for:
+                message.status = 'scheduled'
+            else:
+                message.status = 'sending'
+            
+            message.save()
+            
+            # Create delivery report
+            subscribers_count = shop_profile.subscribers.filter(is_active=True).count()
+            DeliveryReport.objects.create(
+                message=message,
+                total_sent=subscribers_count
+            )
+            
+            # Queue async sending (if not scheduled)
+            if not message.scheduled_for:
+                # Import here to avoid circular imports
+                try:
+                    from .tasks import send_message_async
+                    send_message_async.delay(message.id)
+                except ImportError:
+                    # Celery not configured, send synchronously
+                    send_message_sync(message)
+            
+            django_messages.success(request, 'Message queued for sending!')
+            return redirect('messaging:message_list')
+    else:
+        form = MessageForm(shop_profile=shop_profile)
+    
+    # Get subscriber count
+    subscriber_count = shop_profile.subscribers.filter(is_active=True).count()
+    templates = shop_profile.templates.all()
+    
+    return render(request, 'messaging/send_message.html', {
+        'form': form,
+        'templates': templates,
+        'subscriber_count': subscriber_count,
+        'shop_name': shop_profile.shop_name
+    })
+
+
+@login_required
+def message_list(request):
+    """View message sending history."""
+    try:
+        shop_profile = request.user.shopprofile
+    except ShopProfile.DoesNotExist:
+        django_messages.error(request, 'You must have a shop profile.')
+        return redirect('dashboard:home')
+    
+    messages_sent = shop_profile.messages.all().order_by('-created_at')
+    
+    # Paginate results
+    from django.core.paginator import Paginator
+    paginator = Paginator(messages_sent, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'messaging/message_list.html', {
+        'page_obj': page_obj,
+        'shop_name': shop_profile.shop_name
+    })
+
+
+def send_message_sync(message):
+    """Synchronous message sending (fallback if Celery not available)."""
+    try:
+        from twilio.rest import Client
+        from django.conf import settings
+        
+        client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+        
+        subscribers = message.shop_profile.subscribers.filter(is_active=True)
+        delivery_report = message.delivery_report
+        successful = 0
+        failed = 0
+        
+        for subscriber in subscribers:
+            try:
+                phone = Subscriber.decrypt_phone(subscriber.phone_number_encrypted)
+                
+                if message.message_type in ['sms', 'both']:
+                    client.messages.create(
+                        body=message.content,
+                        from_=settings.TWILIO_PHONE_NUMBER,
+                        to=phone
+                    )
+                
+                if message.message_type in ['whatsapp', 'both']:
+                    client.messages.create(
+                        body=message.content,
+                        from_=f"whatsapp:{settings.TWILIO_WHATSAPP_NUMBER}",
+                        to=f"whatsapp:{phone}"
+                    )
+                
+                successful += 1
+            except Exception as e:
+                failed += 1
+                print(f"Failed to send to {phone}: {str(e)}")
+        
+        # Update delivery report
+        delivery_report.successful = successful
+        delivery_report.failed = failed
+        delivery_report.save()
+        
+        # Update message status
+        message.status = 'sent'
+        message.sent_at = timezone.now()
+        message.save()
+        
+    except Exception as e:
+        print(f"Error sending message: {str(e)}")
