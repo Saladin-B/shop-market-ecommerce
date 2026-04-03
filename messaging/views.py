@@ -90,7 +90,7 @@ def send_message(request):
     """Shop owner view to send broadcast messages to subscribers."""
     # Get shop profile for current user
     try:
-        shop_profile = request.user.shopprofile
+        shop_profile = ShopProfile.objects.get(owner=request.user)
     except ShopProfile.DoesNotExist:
         django_messages.error(request, 'You must have a shop profile to send messages.')
         return redirect('dashboard:home')
@@ -156,7 +156,7 @@ def send_message(request):
 def message_list(request):
     """View message sending history."""
     try:
-        shop_profile = request.user.shopprofile
+        shop_profile = ShopProfile.objects.get(owner=request.user)
     except ShopProfile.DoesNotExist:
         django_messages.error(request, 'You must have a shop profile.')
         return redirect('dashboard:home')
