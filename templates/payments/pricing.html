@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Pricing Plans - Shop Market{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Subscription Plans</h1>
+    
+    {% if subscription and subscription.status == 'active' %}
+    <div class="alert alert-info">
+        <strong>Current Plan:</strong> {{ subscription.get_plan_display }} ({{ subscription.status }})
+    </div>
+    {% endif %}
+    
+    <div class="row">
+        <!-- Basic Plan -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Basic</h5>
+                    <p class="card-text text-muted">500 messages/month</p>
+                    <h3 class="mb-4">$29<small class="text-muted">/month</small></h3>
+                    
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="fas fa-check text-success"></i> 500 SMS messages</li>
+                        <li><i class="fas fa-check text-success"></i> Email support</li>
+                        <li><i class="fas fa-check text-success"></i> Basic analytics</li>
+                    </ul>
+                    
+                    {% if not subscription or subscription.plan != 'basic' %}
+                    <form method="post" action="{% url 'payments:checkout' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="plan" value="basic">
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary w-100" disabled>Current Plan</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pro Plan -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-primary">
+                <div class="card-header bg-primary text-white text-center">
+                    <strong>POPULAR</strong>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Pro</h5>
+                    <p class="card-text text-muted">2000 messages/month</p>
+                    <h3 class="mb-4">$99<small class="text-muted">/month</small></h3>
+                    
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="fas fa-check text-success"></i> 2000 SMS messages</li>
+                        <li><i class="fas fa-check text-success"></i> WhatsApp support</li>
+                        <li><i class="fas fa-check text-success"></i> Priority support</li>
+                        <li><i class="fas fa-check text-success"></i> Advanced analytics</li>
+                    </ul>
+                    
+                    {% if not subscription or subscription.plan != 'pro' %}
+                    <form method="post" action="{% url 'payments:checkout' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="plan" value="pro">
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary w-100" disabled>Current Plan</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enterprise Plan -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Enterprise</h5>
+                    <p class="card-text text-muted">Unlimited messages</p>
+                    <h3 class="mb-4">Custom<small class="text-muted">/month</small></h3>
+                    
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="fas fa-check text-success"></i> Unlimited messages</li>
+                        <li><i class="fas fa-check text-success"></i> All channels</li>
+                        <li><i class="fas fa-check text-success"></i> Dedicated support</li>
+                        <li><i class="fas fa-check text-success"></i> Custom integrations</li>
+                    </ul>
+                    
+                    <button class="btn btn-outline-primary w-100" disabled>Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

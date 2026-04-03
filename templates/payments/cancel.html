@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Cancelled - Shop Market{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="alert alert-warning" role="alert">
+        <h2 class="mb-3"><i class="fas fa-times-circle"></i> Payment Cancelled</h2>
+        <p>Your payment was cancelled. No charges have been made to your account.</p>
+    </div>
+    
+    <div class="mt-4">
+        <p>You can try again or choose a different plan.</p>
+        <a href="{% url 'payments:pricing' %}" class="btn btn-primary">Back to Pricing</a>
+    </div>
+</div>
+{% endblock %}

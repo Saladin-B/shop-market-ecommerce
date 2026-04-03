@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful - Shop Market{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="alert alert-success" role="alert">
+        <h2 class="mb-3"><i class="fas fa-check-circle"></i> Payment Successful!</h2>
+        <p>Thank you for your subscription. Your account has been activated.</p>
+    </div>
+    
+    <div class="mt-4">
+        <p>You can now access all features of your subscription plan.</p>
+        <a href="{% url 'dashboard:home' %}" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
