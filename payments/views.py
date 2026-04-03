@@ -16,7 +16,8 @@ stripe.api_key = config('STRIPE_SECRET_KEY')
 def pricing(request):
     """Display pricing page."""
     try:
-        subscription = Subscription.objects.get(shop=request.user.shopprofile)
+        shop = ShopProfile.objects.get(owner=request.user)
+        subscription = Subscription.objects.get(shop=shop)
     except (Subscription.DoesNotExist, ShopProfile.DoesNotExist):
         subscription = None
     return render(request, 'payments/pricing.html', {'subscription': subscription})
