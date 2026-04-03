@@ -24,7 +24,7 @@ class ShopProfileAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Shop Info', {'fields': ('owner', 'shop_name', 'shop_description', 'unique_slug')}),
         ('Images', {'fields': ('shop_logo',)}),
-        ('Subscription', {'fields': ('subscription_tier', 'subscription_active', 'subscription_start_date')}),
+        ('Subscription', {'fields': ('subscription_tier', 'subscription_active')}),
         ('Verification', {'fields': ('phone_number_verified',)}),
         ('Payments', {'fields': ('stripe_customer_id',)}),
         ('QR Code', {'fields': ('qr_code_display',)}),
