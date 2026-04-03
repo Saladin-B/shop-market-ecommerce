@@ -125,15 +125,9 @@ def send_message(request):
                 total_sent=subscribers_count
             )
             
-            # Queue async sending (if not scheduled)
+            # Send message synchronously (simple approach)
             if not message.scheduled_for:
-                # Import here to avoid circular imports
-                try:
-                    from .tasks import send_message_async
-                    send_message_async.delay(message.id)
-                except ImportError:
-                    # Celery not configured, send synchronously
-                    send_message_sync(message)
+                send_message_sync(message)
             
             django_messages.success(request, 'Message queued for sending!')
             return redirect('messaging:message_list')
