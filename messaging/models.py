@@ -3,44 +3,7 @@ from accounts.models import ShopProfile, CustomUser
 from django.utils import timezone
 from django.conf import settings
 from cryptography.fernet import Fernet
-
-
-class Subscriber(models.Model):
-    """Subscriber model with encrypted phone numbers."""
-    shop_profile = models.ForeignKey(ShopProfile, on_delete=models.CASCADE, related_name='subscribers')
-    phone_number_encrypted = models.CharField(max_length=255)  # Encrypted
-    birth_month = models.IntegerField(
-        choices=[(i, f'Month {i}') for i in range(1, 13)],
-        null=True,
-        blank=True
-    )
-    subscribed_at = models.DateTimeField(auto_now_add=True)
-    unsubscribed_at = models.DateTimeField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        unique_together = ('shop_profile', 'phone_number_encrypted')
-
-    def __str__(self):
-        return f"Subscriber of {self.shop_profile.shop_name}"
-
-    @staticmethod
-    def encrypt_phone(phone):
-        """Encrypt phone number using Fernet."""
-        try:
-            cipher = Fernet(settings.ENCRYPTION_KEY.encode())
-            return cipher.encrypt(phone.encode()).decode()
-        except Exception as e:
-            return phone
-
-    @staticmethod
-    def decrypt_phone(encrypted_phone):
-        """Decrypt phone number using Fernet."""
-        try:
-            cipher = Fernet(settings.ENCRYPTION_KEY.encode())
-            return cipher.decrypt(encrypted_phone.encode()).decode()
-        except Exception as e:
-            return encrypted_phone
+# Subscriber model is now in the subscribers app
 
 
 class MessageTemplate(models.Model):

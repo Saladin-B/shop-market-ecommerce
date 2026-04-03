@@ -49,6 +49,11 @@ class ShopProfile(models.Model):
     def __str__(self):
         return f"{self.shop_name} ({self.owner.email})"
 
+    def generate_qr_code(self):
+        """Generate and return QR code for subscription page."""
+        from messaging.utils import generate_qr_code
+        return generate_qr_code(self.unique_slug)
+
     @property
     def subscription_page_url(self):
         """Returns the public subscription URL for this shop."""

@@ -1,14 +1,15 @@
 from django.contrib import admin
+from subscribers.models import Subscriber
 from .models import (
-    Subscriber, MessageTemplate, Message, MessageLog, 
+    MessageTemplate, Message, MessageLog, 
     DirectMessage, Conversation, ConversationMessage, DeliveryReport
 )
 
 @admin.register(Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
-    list_display = ['shop_profile', 'birth_month', 'is_active', 'subscribed_at']
+    list_display = ['shop', 'birth_month', 'is_active', 'subscribed_at']
     list_filter = ['is_active', 'subscribed_at']
-    search_fields = ['shop_profile__shop_name']
+    search_fields = ['shop__shop_name', 'phone_number_hash']
 
 @admin.register(MessageTemplate)
 class MessageTemplateAdmin(admin.ModelAdmin):
