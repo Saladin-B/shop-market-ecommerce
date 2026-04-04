@@ -3,190 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Aura - Premium Fragrances{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %}Aura - Organic Fragrances{% endblock %}</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FDFCF8',
+                        foreground: '#2C2C24',
+                        primary: { DEFAULT: '#5D7052', foreground: '#F3F4F1' },
+                        secondary: { DEFAULT: '#C18C5D', foreground: '#FFFFFF' },
+                        accent: { DEFAULT: '#E6DCCD', foreground: '#4A4A40' },
+                        muted: { DEFAULT: '#F0EBE5', foreground: '#78786C' },
+                        border: '#DED8CF',
+                        destructive: '#A85448',
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                    },
+                    boxShadow: {
+                        soft: '0 4px 20px -2px rgba(93, 112, 82, 0.15)',
+                        float: '0 10px 40px -10px rgba(193, 140, 93, 0.2)',
+                    },
+                    borderRadius: {
+                        'organic-1': '60% 40% 30% 70% / 60% 30% 70% 40%',
+                        'organic-2': '30% 70% 70% 30% / 30% 30% 70% 70%',
+                        'organic-3': '50% 50% 20% 80% / 25% 80% 20% 75%',
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        :root {
-            --background: #FFFFFF;
-            --foreground: #000000;
-            --muted: #F5F5F5;
-            --muted-foreground: #525252;
-            --border: #000000;
-            --border-light: #E5E5E5;
-        }
-
-        * {
-            border-radius: 0px !important;
-        }
-
-        body {
-            font-family: "Source Serif 4", Georgia, serif;
-            background-color: var(--background);
-            color: var(--foreground);
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: "Playfair Display", Georgia, serif;
-            font-weight: 600;
-            letter-spacing: -0.025em;
-        }
-
-        code, pre, .mono {
-            font-family: "JetBrains Mono", monospace;
-        }
-
-        /* Subtle horizontal line texture */
-        .texture-lines {
-            background-image: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 1px,
-                rgba(0, 0, 0, 0.015) 1px,
-                rgba(0, 0, 0, 0.015) 2px
-            );
-            background-size: 100% 4px;
-        }
-
-        /* Grid texture */
-        .texture-grid {
-            background-image:
-                linear-gradient(rgba(0, 0, 0, 0.008) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.008) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        /* Inverted vertical lines for stats */
-        .texture-stats {
-            background-image: repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 1px,
-                rgba(255, 255, 255, 0.03) 1px,
-                rgba(255, 255, 255, 0.03) 2px
-            );
-            background-size: 4px 100%;
-        }
-
-        /* Dividers */
-        .divider {
-            height: 4px;
-            background-color: var(--border);
-            width: 100%;
-        }
-
-        .divider-ultra {
-            height: 8px;
-            background-color: var(--border);
-            width: 100%;
-        }
-
-        /* Button styles */
-        .btn-primary {
-            @apply bg-black text-white px-8 py-4 font-medium tracking-widest uppercase text-sm transition-all duration-100 border-2 border-black hover:bg-white hover:text-black cursor-pointer;
-        }
-
-        .btn-secondary {
-            @apply bg-transparent text-black px-8 py-4 font-medium tracking-widest uppercase text-sm transition-all duration-100 border-2 border-black hover:bg-black hover:text-white cursor-pointer;
-        }
-
-        /* Input styles */
-        .input-base {
-            @apply bg-white text-black px-4 py-3 border-b-2 border-black placeholder-gray-500 placeholder-italic focus:outline-none focus:border-b-4 transition-all duration-100;
-        }
-
-        /* Link focus state */
-        a:focus-visible {
-            outline: 3px solid var(--foreground);
-            outline-offset: 3px;
-        }
-
-        button:focus-visible {
-            outline: 3px solid var(--foreground);
-            outline-offset: 3px;
-        }
-
-        /* Feature card hover */
-        .feature-card {
-            @apply transition-all duration-100 border-2 border-black p-8;
-        }
-
-        .feature-card:hover {
-            @apply bg-black text-white;
-        }
+        body { background-color: theme('colors.background'); color: theme('colors.foreground'); font-family: theme('fontFamily.sans'); position: relative; }
+        h1, h2, h3, h4, h5, h6, .font-serif { font-family: theme('fontFamily.serif'); }
+        body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.04; mix-blend-mode: multiply; }
+        .btn-primary { @apply inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-3 rounded-full font-bold text-base transition-all duration-300 shadow-soft hover:scale-105 hover:-translate-y-0.5 hover:shadow-float active:scale-95 active:translate-y-0 cursor-pointer; }
+        .btn-secondary { @apply inline-flex items-center justify-center bg-transparent text-secondary border-2 border-secondary/50 px-8 py-3 rounded-full font-bold text-base transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-soft active:scale-95 active:translate-y-0 hover:border-secondary hover:bg-secondary/5 cursor-pointer; }
+        .btn-ghost { @apply inline-flex items-center justify-center bg-transparent text-primary px-8 py-3 rounded-full font-bold text-base transition-all duration-300 hover:bg-primary/10 hover:scale-105 active:scale-95 cursor-pointer; }
+        .input-base { @apply w-full bg-white/50 text-foreground px-6 py-3 rounded-full border border-border placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-background transition-all duration-300; }
+        .card-organic { @apply bg-[#FEFEFA] border border-border/50 rounded-[2rem] shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-float px-6 py-8 md:px-8; }
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
-<body class="texture-lines">
-    <!-- Navigation -->
-    <nav class="border-b-2 border-black">
-        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 py-6 flex items-center justify-between">
-            <a href="/" class="text-3xl font-bold" style="font-family: 'Playfair Display', serif;">✨ Aura</a>
-            
-            <div class="hidden md:flex items-center gap-8">
-                <a href="/" class="text-sm font-medium hover:underline">Home</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'payments:products' %}" class="text-sm font-medium hover:underline">Products</a>
-                    <a href="{% url 'payments:my_cart' %}" class="text-sm font-medium hover:underline">Cart</a>
-                    <a href="{% url 'messaging:message_list' %}" class="text-sm font-medium hover:underline">Messages</a>
-                    <a href="{% url 'accounts:logout' %}" class="text-sm font-medium hover:underline">Logout</a>
-                {% else %}
-                    <a href="{% url 'accounts:login' %}" class="text-sm font-medium hover:underline">Login</a>
-                    <a href="{% url 'accounts:register' %}" class="text-sm font-medium hover:underline">Register</a>
-                {% endif %}
+<body class="antialiased selection:bg-primary/20 selection:text-primary">
+    <div class="fixed top-0 left-0 right-0 z-[100] px-4 pt-4 sm:px-6 md:pt-6 pointer-events-none">
+        <nav class="max-w-5xl mx-auto bg-white/70 backdrop-blur-md border border-border/50 shadow-soft rounded-full pointer-events-auto transition-all duration-500">
+            <div class="px-6 py-3 flex items-center justify-between">
+                <a href="/" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 group-hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <span class="text-xl font-bold font-serif text-foreground tracking-tight">Aura</span>
+                </a>
+                <div class="hidden md:flex items-center gap-2">
+                    <a href="/" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Home</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'payments:products' %}" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Products</a>
+                        <a href="{% url 'payments:my_cart' %}" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Cart</a>
+                        <a href="{% url 'messaging:message_list' %}" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Messages</a>
+                        <a href="{% url 'accounts:logout' %}" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Logout</a>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Login</a>
+                        <a href="{% url 'accounts:register' %}" class="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors rounded-full hover:bg-primary/5">Register</a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 
-    <!-- Messages -->
     {% if messages %}
-        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 mt-4">
+        <div class="max-w-4xl mx-auto px-6 pt-32 pb-4 relative z-[90]">
             {% for message in messages %}
-                <div class="border-2 border-black p-4 mb-4 bg-white text-black">
-                    <p>{{ message }}</p>
+                <div class="bg-white/80 backdrop-blur-md rounded-2xl border border-border/50 shadow-soft p-4 mb-4 text-foreground flex items-start gap-3">
+                    <div class="mt-1 w-2 h-2 rounded-full bg-primary flex-shrink-0"></div>
+                    <p class="text-sm font-medium">{{ message }}</p>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <!-- Main Content -->
-    <main class="min-h-[calc(100vh-200px)]">
+    <main class="min-h-screen relative z-10 pt-24 pb-16">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-black text-white mt-24 py-16 texture-stats">
-        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+    <footer class="bg-muted mt-24 py-24 border-t border-border relative overflow-hidden">
+        <div class="absolute -top-[20rem] -right-[10rem] w-[40rem] h-[40rem] bg-accent/40 rounded-organic-1 blur-3xl opacity-50 pointer-events-none"></div>
+        <div class="absolute -bottom-[10rem] -left-[10rem] w-[30rem] h-[30rem] bg-primary/5 rounded-organic-2 blur-3xl opacity-50 pointer-events-none"></div>
+        
+        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 mb-16">
                 <div>
-                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Playfair Display', serif;">Aura</h4>
-                    <p class="text-sm leading-relaxed">Premium fragrances for the discerning customer. Curated scents for every moment.</p>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold font-serif text-foreground">Aura</h4>
+                    </div>
+                    <p class="text-muted-foreground leading-relaxed max-w-xs">Premium fragrances inspired by nature's deepest roots. Handcrafted, sustainable, timeless.</p>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Playfair Display', serif;">Navigate</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="/" class="hover:underline">Home</a></li>
-                        <li><a href="{% url 'payments:products' %}" class="hover:underline">Products</a></li>
-                        <li><a href="{% url 'accounts:login' %}" class="hover:underline">Account</a></li>
+                    <h4 class="text-lg font-bold font-serif mb-6 text-foreground">Explore</h4>
+                    <ul class="space-y-4 text-muted-foreground font-medium">
+                        <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="{% url 'payments:products' %}" class="hover:text-primary transition-colors">Our Collection</a></li>
+                        <li><a href="{% url 'accounts:login' %}" class="hover:text-primary transition-colors">Account</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Playfair Display', serif;">Contact</h4>
-                    <p class="text-sm">hello@aura.com</p>
-                    <p class="text-sm">+44 (0) 123 456 7890</p>
+                    <h4 class="text-lg font-bold font-serif mb-6 text-foreground">Connect</h4>
+                    <p class="text-muted-foreground font-medium mb-3">hello@aura.com</p>
+                    <p class="text-muted-foreground font-medium">+44 (0) 123 456 7890</p>
                 </div>
             </div>
-            
-            <div class="border-t-2 border-white pt-8">
-                <p class="text-sm text-center">&copy; 2026 Aura. All rights reserved.</p>
+            <div class="border-t border-border/60 pt-8 flex justify-between items-center">
+                <p class="text-sm font-medium text-muted-foreground">&copy; 2026 Aura. Crafted with nature in mind.</p>
             </div>
         </div>
     </footer>
-
     {% block extra_js %}{% endblock %}
 </body>
 </html>
