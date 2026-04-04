@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Pricing Plans - Shop Market{% endblock %}
+{% block title %}Pricing Plans - Shop Market Fragrance{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Subscription Plans</h1>
+    <h1 class="mb-4 text-center">Fragrance Shop Plans</h1>
+    <p class="text-center text-muted mb-5">Choose the perfect plan for your fragrance business</p>
     
     {% if subscription and subscription.status == 'active' %}
     <div class="alert alert-info">
@@ -14,25 +15,27 @@
     {% endif %}
     
     <div class="row">
-        <!-- Basic Plan -->
+        <!-- Starter Plan -->
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Basic</h5>
-                    <p class="card-text text-muted">500 messages/month</p>
+                    <h5 class="card-title">🌸 Starter</h5>
+                    <p class="card-text text-muted">Perfect for new fragrance shops</p>
                     <h3 class="mb-4">$29<small class="text-muted">/month</small></h3>
                     
                     <ul class="list-unstyled mb-4">
-                        <li><i class="fas fa-check text-success"></i> 500 SMS messages</li>
+                        <li><i class="fas fa-check text-success"></i> Order notifications</li>
+                        <li><i class="fas fa-check text-success"></i> 500 customer notifications</li>
                         <li><i class="fas fa-check text-success"></i> Email support</li>
                         <li><i class="fas fa-check text-success"></i> Basic analytics</li>
+                        <li><i class="fas fa-check text-success"></i> Product listings (up to 50)</li>
                     </ul>
                     
                     {% if not subscription or subscription.plan != 'basic' %}
                     <form method="post" action="{% url 'payments:checkout' %}">
                         {% csrf_token %}
                         <input type="hidden" name="plan" value="basic">
-                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                        <button type="submit" class="btn btn-primary w-100">Subscribe Now</button>
                     </form>
                     {% else %}
                     <button class="btn btn-secondary w-100" disabled>Current Plan</button>
@@ -41,29 +44,32 @@
             </div>
         </div>
         
-        <!-- Pro Plan -->
+        <!-- Professional Plan -->
         <div class="col-md-4 mb-4">
             <div class="card h-100 border-primary">
                 <div class="card-header bg-primary text-white text-center">
-                    <strong>POPULAR</strong>
+                    <strong>MOST POPULAR</strong>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Pro</h5>
-                    <p class="card-text text-muted">2000 messages/month</p>
+                    <h5 class="card-title">✨ Professional</h5>
+                    <p class="card-text text-muted">For established fragrance retailers</p>
                     <h3 class="mb-4">$99<small class="text-muted">/month</small></h3>
                     
                     <ul class="list-unstyled mb-4">
-                        <li><i class="fas fa-check text-success"></i> 2000 SMS messages</li>
-                        <li><i class="fas fa-check text-success"></i> WhatsApp support</li>
+                        <li><i class="fas fa-check text-success"></i> Order & delivery updates</li>
+                        <li><i class="fas fa-check text-success"></i> 2000 customer notifications</li>
+                        <li><i class="fas fa-check text-success"></i> WhatsApp marketing</li>
                         <li><i class="fas fa-check text-success"></i> Priority support</li>
                         <li><i class="fas fa-check text-success"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check text-success"></i> Product listings (unlimited)</li>
+                        <li><i class="fas fa-check text-success"></i> Customer reviews</li>
                     </ul>
                     
                     {% if not subscription or subscription.plan != 'pro' %}
                     <form method="post" action="{% url 'payments:checkout' %}">
                         {% csrf_token %}
                         <input type="hidden" name="plan" value="pro">
-                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                        <button type="submit" class="btn btn-primary w-100">Subscribe Now</button>
                     </form>
                     {% else %}
                     <button class="btn btn-secondary w-100" disabled>Current Plan</button>
@@ -72,22 +78,25 @@
             </div>
         </div>
         
-        <!-- Enterprise Plan -->
+        <!-- Luxury Plan -->
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Enterprise</h5>
-                    <p class="card-text text-muted">Unlimited messages</p>
+                    <h5 class="card-title">💎 Luxury</h5>
+                    <p class="card-text text-muted">For premium fragrance boutiques</p>
                     <h3 class="mb-4">Custom<small class="text-muted">/month</small></h3>
                     
                     <ul class="list-unstyled mb-4">
-                        <li><i class="fas fa-check text-success"></i> Unlimited messages</li>
-                        <li><i class="fas fa-check text-success"></i> All channels</li>
-                        <li><i class="fas fa-check text-success"></i> Dedicated support</li>
+                        <li><i class="fas fa-check text-success"></i> Everything in Professional</li>
+                        <li><i class="fas fa-check text-success"></i> Unlimited notifications</li>
+                        <li><i class="fas fa-check text-success"></i> All SMS + WhatsApp channels</li>
+                        <li><i class="fas fa-check text-success"></i> Dedicated account manager</li>
                         <li><i class="fas fa-check text-success"></i> Custom integrations</li>
+                        <li><i class="fas fa-check text-success"></i> Advanced fraud detection</li>
+                        <li><i class="fas fa-check text-success"></i> API access</li>
                     </ul>
                     
-                    <button class="btn btn-outline-primary w-100" disabled>Contact Sales</button>
+                    <a href="mailto:support@shopmarket.com" class="btn btn-outline-primary w-100">Contact Sales</a>
                 </div>
             </div>
         </div>
