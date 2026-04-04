@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import WhatsAppAlert, Product, Cart, CartItem
+from django.utils.html import mark_safe
+from .models import WhatsAppAlert, Product, Cart, CartItem, Order, OrderItem
 
 
 @admin.register(WhatsAppAlert)
@@ -39,9 +40,8 @@ class ProductAdmin(admin.ModelAdmin):
     def image_preview(self, obj):
         """Display image preview in admin"""
         if obj.image:
-            return f'<img src="{obj.image.url}" width="200" height="200" style="object-fit: cover; border-radius: 8px;"/>'
+            return mark_safe(f'<img src="{obj.image.url}" width="200" height="200" style="object-fit: cover; border-radius: 8px;"/>')
         return 'No image uploaded'
-    image_preview.allow_tags = True
     image_preview.short_description = 'Image Preview'
 
 
@@ -57,4 +57,19 @@ class CartAdmin(admin.ModelAdmin):
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ['product', 'quantity', 'get_subtotal']
     search_fields = ['product__name']
+    readonly_fields = ['created_at']
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'shop', 'status', 'total_amount', 'created_at']
+    list_filter = ['status', 'shop', 'created_at']
+    search_fields = ['user__email', 'shop__shop_name', 'stripe_payment_intent']
+    readonly_fields = ['stripe_payment_intent', 'created_at', 'updated_at']
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ['product', 'order', 'quantity', 'price', 'get_subtotal']
+    search_fields = ['product__name', 'order__id']
     readonly_fields = ['created_at']
