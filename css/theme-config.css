@@ -1,0 +1,401 @@
+/**
+ * Theme Configuration & Global Styles
+ * Purpose: Contains the core design system colors, typography, and base styles
+ * Used in: All HTML templates
+ */
+
+:root {
+  /* Color Palette - Minimalist Monochrome with Organic Accents */
+  --color-background: #FDFCF8;
+  --color-foreground: #2C2C24;
+  --color-primary: #5D7052;
+  --color-primary-foreground: #F3F4F1;
+  --color-secondary: #C18C5D;
+  --color-secondary-foreground: #FFFFFF;
+  --color-accent: #E6DCCD;
+  --color-accent-foreground: #4A4A40;
+  --color-muted: #F0EBE5;
+  --color-muted-foreground: #78786C;
+  --color-border: #DED8CF;
+  --color-destructive: #A85448;
+  
+  /* Typography */
+  --font-sans: 'Nunito', sans-serif;
+  --font-serif: 'Fraunces', serif;
+  
+  /* Shadows - Soft, diffused, colored (never pure black) */
+  --shadow-soft: 0 4px 20px -2px rgba(93, 112, 82, 0.15);
+  --shadow-float: 0 10px 40px -10px rgba(193, 140, 93, 0.2);
+  --shadow-elevated: 0 20px 40px -10px rgba(93, 112, 82, 0.15);
+  
+  /* Border Radius - Standard and organic */
+  --radius-standard: 16px;
+  --radius-large: 24px;
+  --radius-pill: 9999px;
+}
+
+/* Base Body Styling */
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography - Headings use serif font */
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/**
+ * Grain Texture Overlay - CRITICAL FOR DESIGN
+ * Purpose: Adds a subtle film grain/paper noise overlay across entire page
+ * Effect: Creates organic, sophisticated visual texture with multiply blend mode
+ * Opacity: 3-5% to maintain subtlety while providing visual interest
+ */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+}
+
+/**
+ * Button Styles
+ * Purpose: Reusable button component classes with fully rounded pill shapes
+ * Shape: All variants use border-radius: 9999px (fully rounded pills)
+ * Interaction: Hover scales 105% with shadow deepening, active scales 95% for tactile feedback
+ */
+
+/* Primary Button - Main call-to-action */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  padding: 12px 32px;
+  border-radius: var(--radius-pill);
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 300ms ease;
+  box-shadow: var(--shadow-soft);
+  border: none;
+  cursor: pointer;
+  height: 48px;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 6px 24px -4px rgba(93, 112, 82, 0.25);
+}
+
+.btn-primary:active {
+  transform: scale(0.95) translateY(0);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Primary Button - Small variant */
+.btn-primary-sm {
+  height: 40px;
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+/* Primary Button - Large variant */
+.btn-primary-lg {
+  height: 56px;
+  padding: 16px 40px;
+  font-size: 18px;
+}
+
+/* Secondary/Outline Button - Alternative action with Terracotta border */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+  padding: 10px 32px;
+  border-radius: var(--radius-pill);
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 300ms ease;
+  cursor: pointer;
+  height: 48px;
+}
+
+.btn-secondary:hover {
+  transform: scale(1.05) translateY(-2px);
+  background-color: rgba(193, 140, 93, 0.05);
+  box-shadow: 0 6px 24px -4px rgba(193, 140, 93, 0.2);
+}
+
+.btn-secondary:active {
+  transform: scale(0.95) translateY(0);
+}
+
+/* Secondary Button - Small variant */
+.btn-secondary-sm {
+  height: 40px;
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+/* Secondary Button - Large variant */
+.btn-secondary-lg {
+  height: 56px;
+  padding: 16px 40px;
+  font-size: 18px;
+}
+
+/* Ghost Button - Low priority action with transparent background */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--color-primary);
+  padding: 12px 32px;
+  border-radius: var(--radius-pill);
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 300ms ease;
+  border: none;
+  cursor: pointer;
+  height: 48px;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(93, 112, 82, 0.1);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-ghost:active {
+  transform: scale(0.95);
+}
+
+/* Ghost Button - Small variant */
+.btn-ghost-sm {
+  height: 40px;
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+/* Ghost Button - Large variant */
+.btn-ghost-lg {
+  height: 56px;
+  padding: 16px 40px;
+  font-size: 18px;
+}
+
+/**
+ * Card / Container Styles
+ * Purpose: Reusable card component with soft shadows, texture overlay, and hover interactions
+ * Background: Extremely light beige (#FEFEFA) over off-white background
+ * Border: Soft timber (#DED8CF) at 50% opacity
+ * Shape: rounded-2rem (32px) base with asymmetric variations available
+ * Texture: Fixed noise overlay at 3% opacity with multiply blend mode
+ * Interaction: Lifts on hover (-translate-y-1) with shadow deepening
+ */
+
+/* Base Card Style */
+.card-base {
+  background-color: #FEFEFA;
+  border: 1px solid rgba(222, 216, 207, 0.5);
+  border-radius: 2rem;
+  box-shadow: var(--shadow-soft);
+  transition: all 500ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card Texture Overlay - CRITICAL */
+.card-base::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+  z-index: 10;
+}
+
+.card-base:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+}
+
+/**
+ * Card Component - Organic
+ * Purpose: Feature card with organic styling, lift effect on hover
+ * Base radius: rounded-2rem with asymmetric corner variations
+ * Hover: Lifts with -translate-y-1 and shadow deepens
+ */
+.card-organic {
+  background-color: #FEFEFA;
+  border: 1px solid rgba(222, 216, 207, 0.5);
+  border-radius: 2rem;
+  box-shadow: var(--shadow-soft);
+  transition: all 500ms ease;
+  padding: 32px 24px;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card texture overlay */
+.card-organic::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+  z-index: 10;
+}
+
+.card-organic:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(93, 112, 82, 0.15);
+}
+
+/* Ensure content sits above texture overlay */
+.card-organic > * {
+  position: relative;
+  z-index: 11;
+}
+
+@media (min-width: 768px) {
+  .card-organic {
+    padding: 32px;
+  }
+}
+
+/* Card variant - Asymmetric rounded corners */
+.card-organic-asymmetric-tl {
+  border-radius: 4rem 2rem 2rem 2rem;
+}
+
+.card-organic-asymmetric-tr {
+  border-radius: 2rem 4rem 2rem 2rem;
+}
+
+.card-organic-asymmetric-bl {
+  border-radius: 2rem 2rem 2rem 4rem;
+}
+
+.card-organic-asymmetric-br {
+  border-radius: 2rem 2rem 4rem 2rem;
+}
+
+/**
+ * Form Input Styles
+ * Purpose: Consistent input field styling with pill shape and enhanced focus states
+ * Shape: Fully rounded pills with border-radius: 9999px
+ * Background: Semi-transparent white with soft borders
+ * Focus: Ring shadow with primary color at reduced opacity
+ */
+.input-base {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: var(--color-foreground);
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-sans);
+  transition: all 300ms ease;
+  font-size: 16px;
+}
+
+.input-base::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.input-base:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(93, 112, 82, 0.2);
+  border-color: var(--color-primary);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Input variant - Large */
+.input-base-lg {
+  padding: 16px 28px;
+  font-size: 18px;
+}
+
+/* Input variant - Small */
+.input-base-sm {
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+/* Input error state */
+.input-base.error {
+  border-color: var(--color-destructive);
+  box-shadow: 0 0 0 4px rgba(168, 84, 72, 0.1);
+}
+
+/**
+ * Organic Shapes - Custom blob shapes via border-radius
+ * Purpose: Create organic, imperfect shapes for design variety
+ * Usage: Apply to elements requiring organic curves
+ */
+
+/* Organic Shape 1 - Blob style */
+.shape-organic-1 {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+/* Organic Shape 2 - Alternative blob */
+.shape-organic-2 {
+  border-radius: 40% 60% 70% 30% / 50% 60% 30% 60%;
+}
+
+/* Organic Shape 3 - Asymmetric blob */
+.shape-organic-3 {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+/* Organic Shape 4 - Wavy blob */
+.shape-organic-4 {
+  border-radius: 72% 28% 66% 34% / 44% 48% 52% 56%;
+}
+
+/**
+ * Standard Border Radius Classes
+ * Purpose: Provide standard rounded corner options
+ */
+.rounded-standard {
+  border-radius: var(--radius-standard);
+}
+
+.rounded-large {
+  border-radius: var(--radius-large);
+}
+
+.rounded-pill {
+  border-radius: var(--radius-pill);
+}
