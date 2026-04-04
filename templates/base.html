@@ -5,150 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Aura - Premium Fragrances{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#FDFCF8',
+                        foreground: '#2C2C24',
+                        primary: {
+                            DEFAULT: '#5D7052',
+                            foreground: '#F3F4F1',
+                        },
+                        secondary: {
+                            DEFAULT: '#C18C5D',
+                            foreground: '#FFFFFF',
+                        },
+                        accent: {
+                            DEFAULT: '#E6DCCD',
+                            foreground: '#4A4A40',
+                        },
+                        muted: {
+                            DEFAULT: '#F0EBE5',
+                            foreground: '#78786C',
+                        },
+                        border: '#DED8CF',
+                        destructive: '#A85448',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(93, 112, 82, 0.15)',
+                        'float': '0 10px 40px -10px rgba(193, 140, 93, 0.2)',
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&family=Nunito:wght@400..800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --background: #FDFCF8;
             --foreground: #2C2C24;
             --primary: #5D7052;
-            --primary-foreground: #F3F4F1;
             --secondary: #C18C5D;
-            --secondary-foreground: #FFFFFF;
-            --accent: #E6DCCD;
-            --accent-foreground: #4A4A40;
-            --muted: #F0EBE5;
-            --muted-foreground: #78786C;
             --border: #DED8CF;
-            --destructive: #A85448;
-        }
-
-        * {
-            border-radius: 0px;
         }
 
         body {
-            font-family: "Nunito", system-ui, sans-serif;
+            font-family: "Nunito", sans-serif;
             background-color: var(--background);
             color: var(--foreground);
             position: relative;
         }
 
-        body::before {
-            content: '';
+        /* Essential global noise texture overlay */
+        body::after {
+            content: "";
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-            mix-blend-mode: multiply;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
-            z-index: -1;
+            z-index: 9999;
+            opacity: 0.04;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         h1, h2, h3, h4, h5, h6 {
-            font-family: "Fraunces", Georgia, serif;
-            font-weight: 700;
+            font-family: "Fraunces", serif;
+            font-weight: 600;
         }
 
-        /* Organic border-radius utilities */
-        .blob-1 {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-        }
-
-        .blob-2 {
-            border-radius: 30% 60% 70% 40% / 50% 50% 30% 70%;
-        }
-
-        .blob-3 {
-            border-radius: 50% 50% 40% 60% / 30% 70% 60% 40%;
-        }
-
-        .blob-4 {
-            border-radius: 70% 30% 50% 50% / 50% 30% 70% 50%;
-        }
-
-        /* Soft shadows */
-        .shadow-soft {
-            box-shadow: 0 4px 20px -2px rgba(93, 112, 82, 0.15);
-        }
-
-        .shadow-float {
-            box-shadow: 0 10px 40px -10px rgba(193, 140, 93, 0.2);
-        }
-
-        /* Button styles */
+        /* Button styles: Organic */
         .btn-primary {
-            @apply h-12 px-8 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-bold transition-all duration-300 hover:scale-105 active:scale-95 shadow-soft hover:shadow-float cursor-pointer border-none;
+            @apply bg-primary text-[#F3F4F1] px-8 sm:px-10 py-3 sm:py-[14px] font-bold text-base transition-all duration-300 rounded-full shadow-soft hover:shadow-[0_6px_24px_-4px_rgba(93,112,82,0.25)] hover:scale-105 active:scale-95 cursor-pointer;
         }
 
         .btn-secondary {
-            @apply h-12 px-8 rounded-full bg-transparent border-2 border-[var(--secondary)] text-[var(--secondary)] font-bold transition-all duration-300 hover:bg-[var(--secondary)] hover:text-white hover:scale-105 active:scale-95 cursor-pointer;
-        }
-
-        .btn-ghost {
-            @apply h-12 px-8 rounded-full bg-transparent text-[var(--primary)] font-bold transition-all duration-300 hover:bg-[var(--primary)]/10 hover:scale-105 active:scale-95 cursor-pointer;
+            @apply bg-transparent text-secondary px-8 sm:px-10 py-3 sm:py-[14px] font-bold text-base transition-all duration-300 border-2 border-secondary rounded-full hover:scale-105 active:scale-95 cursor-pointer;
         }
 
         /* Input styles */
-        .input-organic {
-            @apply h-12 px-6 rounded-full bg-white/50 text-[var(--foreground)] placeholder-[var(--muted-foreground)] border-2 border-[var(--border)] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:ring-offset-2;
-        }
-
-        /* Card styles */
-        .card-organic {
-            @apply rounded-[2rem] bg-white/80 border border-[var(--border)]/50 p-8 shadow-soft transition-all duration-300 hover:shadow-float hover:-translate-y-1;
-        }
-
-        /* Glassmorphism */
-        .glass {
-            @apply bg-white/70 backdrop-blur-md border border-[var(--border)]/30;
+        .input-base {
+            @apply bg-white/50 text-foreground px-6 py-3 rounded-full border border-border placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 transition-all duration-300 h-12;
         }
 
         /* Link focus state */
-        a:focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-            border-radius: 4px;
+        a:focus-visible, button:focus-visible {
+            outline: none;
+            @apply ring-2 ring-primary ring-offset-2;
         }
 
-        button:focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
+        /* Feature card */
+        .feature-card {
+            @apply transition-all duration-500 border border-border/50 p-8 rounded-[2rem] shadow-soft bg-[#FEFEFA] relative overflow-hidden;
         }
+
+        .feature-card:hover {
+            @apply -translate-y-1 shadow-[0_20px_40px_-10px_rgba(93,112,82,0.15)];
+        }
+
+        /* Blob custom shapes */
+        .blob-bg {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+
+        /* Glassmorphic Nav */
+        .nav-glass {
+            @apply sticky top-4 bg-white/70 backdrop-blur-md border border-border/50 rounded-full shadow-sm z-50 transition-all duration-300;
+        }
+
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="texture-lines">
     <!-- Navigation -->
-    <nav class="sticky top-4 z-50 mx-4">
-        <div class="glass max-w-6xl mx-auto px-6 py-4 rounded-full flex items-center justify-between">
-            <a href="/" class="text-2xl font-bold text-[var(--primary)]" style="font-family: 'Fraunces', serif;">✨ Aura</a>
+    <nav class="max-w-6xl mx-auto mt-4 px-6 md:px-8 py-4 flex items-center justify-between nav-glass">
+            <a href="/" class="text-3xl font-bold text-primary flex items-center gap-2">
+                <div class="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">✨</div>
+                Aura
+            </a>
             
             <div class="hidden md:flex items-center gap-8">
-                <a href="/" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Home</a>
+                <a href="/" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Home</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'payments:products' %}" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Products</a>
-                    <a href="{% url 'payments:my_cart' %}" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Cart</a>
-                    <a href="{% url 'messaging:message_list' %}" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Messages</a>
-                    <a href="{% url 'accounts:logout' %}" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Logout</a>
+                    <a href="{% url 'payments:products' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Products</a>
+                    <a href="{% url 'payments:my_cart' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Cart</a>
+                    <a href="{% url 'messaging:message_list' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Messages</a>
+                    <a href="{% url 'accounts:logout' %}" class="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">Logout</a>
                 {% else %}
-                    <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Login</a>
-                    <a href="{% url 'accounts:register' %}" class="text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors">Register</a>
+                    <a href="{% url 'accounts:login' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="btn-primary py-2 px-6 shadow-none">Register</a>
                 {% endif %}
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <!-- Messages -->
     {% if messages %}
-        <div class="max-w-6xl mx-auto px-4 mt-8">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 mt-4">
             {% for message in messages %}
-                <div class="card-organic border-l-4 border-[var(--primary)]">
+                <div class="border-2 border-black p-4 mb-4 bg-white text-black">
                     <p>{{ message }}</p>
                 </div>
             {% endfor %}
@@ -156,40 +160,35 @@
     {% endif %}
 
     <!-- Main Content -->
-    <main class="relative z-0 min-h-[calc(100vh-200px)]">
+    <main class="min-h-[calc(100vh-200px)]">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[var(--primary)] text-white py-16 mt-24 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-0 right-0 w-96 h-96 blob-1 bg-white blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 w-96 h-96 blob-2 bg-white blur-3xl"></div>
-        </div>
-
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <footer class="bg-black text-white mt-24 py-16 texture-stats">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                 <div>
-                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Fraunces', serif;">Aura</h4>
-                    <p class="text-sm leading-relaxed opacity-90">Premium fragrances for the discerning customer. Curated scents for every moment.</p>
+                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Playfair Display', serif;">Aura</h4>
+                    <p class="text-sm leading-relaxed">Premium fragrances for the discerning customer. Curated scents for every moment.</p>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Fraunces', serif;">Navigate</h4>
+                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Playfair Display', serif;">Navigate</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="/" class="opacity-90 hover:opacity-100 transition-opacity">Home</a></li>
-                        <li><a href="{% url 'payments:products' %}" class="opacity-90 hover:opacity-100 transition-opacity">Products</a></li>
-                        <li><a href="{% url 'accounts:login' %}" class="opacity-90 hover:opacity-100 transition-opacity">Account</a></li>
+                        <li><a href="/" class="hover:underline">Home</a></li>
+                        <li><a href="{% url 'payments:products' %}" class="hover:underline">Products</a></li>
+                        <li><a href="{% url 'accounts:login' %}" class="hover:underline">Account</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Fraunces', serif;">Contact</h4>
-                    <p class="text-sm opacity-90">hello@aura.com</p>
-                    <p class="text-sm opacity-90">+44 (0) 123 456 7890</p>
+                    <h4 class="text-lg font-bold mb-4" style="font-family: 'Playfair Display', serif;">Contact</h4>
+                    <p class="text-sm">hello@aura.com</p>
+                    <p class="text-sm">+44 (0) 123 456 7890</p>
                 </div>
             </div>
             
-            <div class="border-t border-white/30 pt-8">
-                <p class="text-sm text-center opacity-75">&copy; 2026 Aura. All rights reserved.</p>
+            <div class="border-t-2 border-white pt-8">
+                <p class="text-sm text-center">&copy; 2026 Aura. All rights reserved.</p>
             </div>
         </div>
     </footer>

@@ -10,7 +10,7 @@ def products(request):
     """Display all products for authenticated users."""
     products = Product.objects.all()
     user_cart = None
-    if hasattr(request.user, 'shop_profile') and request.user.shop_profile:
+    if request.user.shopprofile:
         # Get user's first cart (if any)
         user_cart = Cart.objects.filter(user=request.user).first()
     return render(request, 'products/product_list.html', {
