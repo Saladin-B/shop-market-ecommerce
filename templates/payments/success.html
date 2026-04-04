@@ -1,17 +1,125 @@
-{% extends 'base.html' %}
-
-{% block title %}Payment Successful - Aura{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5 text-center">
-    <div class="alert alert-success" role="alert">
-        <h2 class="mb-3"><i class="fas fa-check-circle"></i> Payment Successful!</h2>
-        <p>Thank you for your subscription. Your account has been activated.</p>
+<div class="container mx-auto px-4 py-12">
+    <!-- Success Header -->
+    <div class="text-center mb-12">
+        <div class="inline-block mb-6">
+            <svg class="w-20 h-20 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">Payment Successful!</h1>
+        <p class="text-gray-600 text-lg">Thank you for your purchase. Your order has been confirmed.</p>
     </div>
-    
-    <div class="mt-4">
-        <p>You can now access all features of your subscription plan.</p>
-        <a href="{% url 'dashboard:home' %}" class="btn btn-primary">Go to Dashboard</a>
+
+    <!-- Order Details Card -->
+    <div class="max-w-2xl mx-auto mb-8">
+        <div class="card-organic p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Order Details</h2>
+            
+            {% if order %}
+            <div class="space-y-4">
+                <!-- Order ID -->
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span class="text-gray-600">Order ID:</span>
+                    <span class="font-semibold text-gray-800">#{{ order.id }}</span>
+                </div>
+
+                <!-- Order Date -->
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span class="text-gray-600">Order Date:</span>
+                    <span class="font-semibold text-gray-800">{{ order.created_at|date:"M d, Y H:i" }}</span>
+                </div>
+
+                <!-- Order Status -->
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span class="text-gray-600">Status:</span>
+                    <span class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                        Completed
+                    </span>
+                </div>
+
+                <!-- Shop Name -->
+                {% if order.shop %}
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span class="text-gray-600">Shop:</span>
+                    <span class="font-semibold text-gray-800">{{ order.shop.shop_name }}</span>
+                </div>
+                {% endif %}
+
+                <!-- Items Count -->
+                <div class="flex justify-between items-center border-b pb-4">
+                    <span class="text-gray-600">Items:</span>
+                    <span class="font-semibold text-gray-800">{{ order.items_count }}</span>
+                </div>
+
+                <!-- Order Items -->
+                <div class="mt-8 pb-8 border-b border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Items Ordered:</h3>
+                    <div class="space-y-4">
+                        {% for item in order.order_items.all %}
+                        <div class="bg-gradient-to-r from-orange-50 to-transparent p-6 rounded-lg border border-orange-200">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex-grow">
+                                    <h4 class="text-lg font-bold text-gray-800">{{ item.product.name }}</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Product ID: {{ item.product.id }}</p>
+                                </div>
+                                <span class="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                                    Qty: {{ item.quantity }}
+                                </span>
+                            </div>
+                            
+                            <!-- Price Breakdown -->
+                            <div class="flex justify-between items-center pt-3 border-t border-orange-200">
+                                <div>
+                                    <p class="text-sm text-gray-600">Unit Price:</p>
+                                    <p class="text-lg font-semibold text-gray-800">£{{ item.price|floatformat:2 }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-600">Item Subtotal:</p>
+                                    <p class="text-2xl font-bold text-orange-600">£{{ item.get_subtotal|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-gray-600 text-center py-4">No items in this order.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Total Amount -->
+                <div class="mt-8 bg-gradient-to-r from-green-100 to-green-50 p-6 rounded-lg border-2 border-green-300">
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold text-gray-800">Total Amount Paid:</span>
+                        <span class="text-4xl font-bold text-green-700">
+                            £{{ order.total_amount|floatformat:2 }}
+                        </span>
+                    </div>
+                    <p class="text-sm text-green-700 mt-3">Payment in British Pounds (GBP)</p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-gray-600 text-center">Order information not available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="max-w-2xl mx-auto flex gap-4 justify-center">
+        <a href="{% url 'payments:products' %}" class="btn-primary px-8 py-3">
+            Continue Shopping
+        </a>
+        <a href="/" class="btn-secondary px-8 py-3">
+            Back to Home
+        </a>
+    </div>
+
+    <!-- Email Confirmation Notice -->
+    <div class="max-w-2xl mx-auto mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-blue-800 text-center text-sm">
+            <strong>✓ Confirmation email sent</strong> to {{ request.user.email }}
+        </p>
     </div>
 </div>
 {% endblock %}
