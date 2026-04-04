@@ -5,8 +5,8 @@ from accounts.models import ShopProfile
 class Subscription(models.Model):
     """Stripe subscription record for fragrance shop owners."""
     PLAN_CHOICES = [
-        ('basic', 'Starter - $29/month'),
-        ('pro', 'Professional - $99/month'),
+        ('basic', 'Starter - £29/month'),
+        ('pro', 'Professional - £99/month'),
         ('enterprise', 'Luxury - Custom pricing'),
     ]
     STATUS_CHOICES = [

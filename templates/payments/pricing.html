@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Pricing Plans - Shop Market Fragrance{% endblock %}
+{% block title %}Pricing Plans - Aura Fragrance{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Fragrance Shop Plans</h1>
-    <p class="text-center text-muted mb-5">Choose the perfect plan for your fragrance business</p>
+    <h1 class="mb-4 text-center">Aura Fragrance Plans</h1>
+    <p class="text-center text-muted mb-5">Choose the perfect plan for your fragrance boutique</p>
     
     {% if subscription and subscription.status == 'active' %}
     <div class="alert alert-info">
@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <h5 class="card-title">🌸 Starter</h5>
                     <p class="card-text text-muted">Perfect for new fragrance shops</p>
-                    <h3 class="mb-4">$29<small class="text-muted">/month</small></h3>
+                    <h3 class="mb-4">£29<small class="text-muted">/month</small></h3>
                     
                     <ul class="list-unstyled mb-4">
                         <li><i class="fas fa-check text-success"></i> Order notifications</li>
@@ -53,7 +53,7 @@
                 <div class="card-body">
                     <h5 class="card-title">✨ Professional</h5>
                     <p class="card-text text-muted">For established fragrance retailers</p>
-                    <h3 class="mb-4">$99<small class="text-muted">/month</small></h3>
+                    <h3 class="mb-4">£99<small class="text-muted">/month</small></h3>
                     
                     <ul class="list-unstyled mb-4">
                         <li><i class="fas fa-check text-success"></i> Order & delivery updates</li>
