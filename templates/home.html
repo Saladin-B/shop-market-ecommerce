@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Aura - Premium Fragrances Online{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero">
+    <h1>✨ Aura</h1>
+    <p>Discover Your Signature Scent</p>
+    <p style="font-size: 1rem; margin-bottom: 30px;">Premium fragrances curated for every mood and occasion</p>
+    {% if user.is_authenticated %}
+        <a href="{% url 'payments:products' %}" class="btn btn-primary-custom">Shop Now</a>
+    {% else %}
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary-custom">Get Started</a>
+    {% endif %}
+</div>
+
+<!-- Featured Section -->
+<div style="margin-top: 60px;">
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 h-100" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                    🌸
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Floral Collection</h5>
+                    <p class="card-text">Delicate and elegant fragrances inspired by blooming gardens.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 h-100" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                    🌴
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Exotic Blends</h5>
+                    <p class="card-text">Bold and exotic scents from around the world.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 h-100" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                    ❄️
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Fresh Notes</h5>
+                    <p class="card-text">Crisp and refreshing fragrances for everyday wear.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div style="background-color: #f0f0f0; padding: 60px 0; margin-top: 60px; margin-left: -12px; margin-right: -12px; margin-bottom: 60px;">
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 50px; color: #333;">Why Choose Aura?</h2>
+        <div class="row">
+            <div class="col-md-3 text-center mb-4">
+                <div style="font-size: 3rem; margin-bottom: 15px;">💎</div>
+                <h5>Premium Quality</h5>
+                <p style="color: #666;">Authentic fragrances from leading designers</p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div style="font-size: 3rem; margin-bottom: 15px;">🚚</div>
+                <h5>Fast Delivery</h5>
+                <p style="color: #666;">Quick and secure shipping to your door</p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div style="font-size: 3rem; margin-bottom: 15px;">💯</div>
+                <h5>Best Prices</h5>
+                <p style="color: #666;">Competitive prices with regular discounts</p>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div style="font-size: 3rem; margin-bottom: 15px;">📱</div>
+                <h5>Easy Ordering</h5>
+                <p style="color: #666;">Simple checkout and order tracking</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div style="text-align: center; margin-top: 60px; margin-bottom: 60px;">
+    <h2 style="color: #333; margin-bottom: 20px;">Ready to Find Your Signature Scent?</h2>
+    <p style="color: #666; margin-bottom: 30px; font-size: 1.1rem;">Browse our collection or subscribe for WhatsApp alerts on new arrivals</p>
+    <div>
+        {% if user.is_authenticated %}
+            <a href="{% url 'payments:products' %}" class="btn btn-lg" style="background-color: #6c5ce7; color: white; margin-right: 10px; padding: 12px 30px;">Shop Our Collection</a>
+        {% else %}
+            <a href="{% url 'accounts:register' %}" class="btn btn-lg" style="background-color: #6c5ce7; color: white; padding: 12px 30px;">Create Account</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

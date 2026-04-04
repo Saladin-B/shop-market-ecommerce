@@ -1,135 +1,102 @@
-import stripe
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
 from django.contrib import messages
-from decouple import config
 from accounts.models import ShopProfile
-from .models import Subscription
-
-stripe.api_key = config('STRIPE_SECRET_KEY')
+from .models import Product, Cart, CartItem
 
 
 @login_required
-def pricing(request):
-    """Display pricing page."""
-    try:
-        shop = ShopProfile.objects.get(owner=request.user)
-        subscription = Subscription.objects.get(shop=shop)
-    except (Subscription.DoesNotExist, ShopProfile.DoesNotExist):
-        subscription = None
-    return render(request, 'payments/pricing.html', {'subscription': subscription})
+def products(request):
+    """Display all products for authenticated users."""
+    products = Product.objects.all()
+    user_cart = None
+    if request.user.shopprofile:
+        # Get user's first cart (if any)
+        user_cart = Cart.objects.filter(user=request.user).first()
+    return render(request, 'products/product_list.html', {
+        'products': products,
+        'user_cart': user_cart
+    })
+
+
+def product_list(request, shop_id):
+    """Display products for a shop."""
+    shop = get_object_or_404(ShopProfile, id=shop_id)
+    products = shop.products.all()
+    return render(request, 'products/product_list.html', {
+        'shop': shop,
+        'products': products
+    })
 
 
 @login_required
-@require_POST
-def create_checkout_session(request):
-    """Create Stripe checkout session."""
-    try:
-        shop = ShopProfile.objects.get(owner=request.user)
-    except ShopProfile.DoesNotExist:
-        messages.error(request, 'You must have a shop profile.')
-        return redirect('dashboard:home')
+def add_to_cart(request, product_id):
+    """Add product to cart."""
+    product = get_object_or_404(Product, id=product_id)
+    shop = product.shop
     
-    plan = request.POST.get('plan')
-    if plan not in ['basic', 'pro', 'enterprise']:
-        messages.error(request, 'Invalid plan selected.')
-        return redirect('payments:pricing')
+    # Get or create cart
+    cart, created = Cart.objects.get_or_create(user=request.user, shop=shop)
     
-    prices = {
-        'basic': config('STRIPE_BASIC_PRICE_ID', default=''),
-        'pro': config('STRIPE_PRO_PRICE_ID', default=''),
-        'enterprise': config('STRIPE_ENTERPRISE_PRICE_ID', default=''),
-    }
+    # Get or create cart item
+    quantity = int(request.POST.get('quantity', 1))
+    cart_item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product,
+        defaults={'quantity': quantity}
+    )
     
-    if not prices[plan]:
-        messages.error(request, 'Payment not configured.')
-        return redirect('payments:pricing')
+    if not created:
+        cart_item.quantity += quantity
+        cart_item.save()
     
-    try:
-        session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{'price': prices[plan], 'quantity': 1}],
-            mode='subscription',
-            customer_email=request.user.email,
-            success_url=request.build_absolute_uri('/payments/success/'),
-            cancel_url=request.build_absolute_uri('/payments/cancel/'),
-            metadata={'shop_id': shop.id, 'plan': plan},
-        )
-        return redirect(session.url, code=303)
-    except Exception as e:
-        messages.error(request, f'Error: {str(e)}')
-        return redirect('payments:pricing')
+    messages.success(request, f'{product.name} added to cart!')
+    return redirect('payments:view_cart', cart_id=cart.id)
 
 
 @login_required
-def payment_success(request):
-    """Payment success page."""
-    return render(request, 'payments/success.html')
+def view_cart(request, cart_id):
+    """View shopping cart."""
+    cart = get_object_or_404(Cart, id=cart_id, user=request.user)
+    return render(request, 'products/cart.html', {'cart': cart})
 
 
 @login_required
-def payment_cancel(request):
-    """Payment cancelled page."""
-    return render(request, 'payments/cancel.html')
-
-
-@csrf_exempt
-@require_POST
-def stripe_webhook(request):
-    """Handle Stripe webhook events."""
-    payload = request.body
-    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
-    webhook_secret = config('STRIPE_WEBHOOK_SECRET', default='')
+def update_cart_item(request, item_id):
+    """Update item quantity in cart."""
+    cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+    quantity = int(request.POST.get('quantity', 1))
     
-    if not webhook_secret:
-        return JsonResponse({'status': 'error'}, status=400)
+    if quantity <= 0:
+        cart_item.delete()
+        messages.success(request, 'Item removed from cart.')
+    else:
+        cart_item.quantity = quantity
+        cart_item.save()
+        messages.success(request, 'Cart updated.')
     
-    try:
-        event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-    except (ValueError, stripe.error.SignatureVerificationError):
-        return JsonResponse({'status': 'error'}, status=400)
-    
-    if event['type'] == 'checkout.session.completed':
-        _handle_checkout_completed(event['data']['object'])
-    elif event['type'] == 'customer.subscription.updated':
-        _handle_subscription_updated(event['data']['object'])
-    elif event['type'] == 'customer.subscription.deleted':
-        _handle_subscription_deleted(event['data']['object'])
-    
-    return JsonResponse({'status': 'success'})
+    return redirect('payments:view_cart', cart_id=cart_item.cart.id)
 
 
-def _handle_checkout_completed(session):
-    """Handle successful checkout."""
-    try:
-        shop = ShopProfile.objects.get(id=session['metadata']['shop_id'])
-        subscription, _ = Subscription.objects.get_or_create(shop=shop)
-        subscription.stripe_subscription_id = session['subscription']
-        subscription.plan = session['metadata']['plan']
-        subscription.status = 'active'
-        subscription.save()
-    except Exception as e:
-        print(f'Checkout error: {str(e)}')
+@login_required
+def remove_from_cart(request, item_id):
+    """Remove item from cart."""
+    cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+    cart_id = cart_item.cart.id
+    cart_item.delete()
+    messages.success(request, 'Item removed from cart.')
+    return redirect('payments:view_cart', cart_id=cart_id)
 
 
-def _handle_subscription_updated(sub):
-    """Update subscription status."""
-    try:
-        subscription = Subscription.objects.get(stripe_subscription_id=sub['id'])
-        subscription.status = sub['status']
-        subscription.save()
-    except Subscription.DoesNotExist:
-        pass
+@login_required
+def my_cart(request):
+    """View current user's cart."""
+    # Get or create user's first cart
+    user_carts = Cart.objects.filter(user=request.user)
+    if user_carts.exists():
+        cart = user_carts.first()
+    else:
+        # If no cart, show empty cart message
+        return render(request, 'products/empty_cart.html')
+    return render(request, 'products/cart.html', {'cart': cart})
 
-
-def _handle_subscription_deleted(sub):
-    """Mark subscription as cancelled."""
-    try:
-        subscription = Subscription.objects.get(stripe_subscription_id=sub['id'])
-        subscription.status = 'cancelled'
-        subscription.save()
-    except Subscription.DoesNotExist:
-        pass
