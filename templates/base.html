@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Aura - Organic Fragrances{% endblock %}</title>
     
-    <!-- Google Fonts for Typography -->
+    <!-- Preconnect to external domains for faster DNS lookup -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts with font-display: swap for faster perceived load -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="preload" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS Framework -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind Configuration - Extends default theme with custom colors and styles -->
+    <!-- Tailwind CSS - Using CDN with strategy for faster load -->
+    <script defer src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration - Inline for immediate availability -->
     <script>
         tailwind.config = {
             theme: {
@@ -46,8 +50,8 @@
         }
     </script>
     
-    <!-- External CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/theme-config.css' %}">
+    <!-- External CSS Files - Critical rendering path -->
+    <link rel="stylesheet" href="{% static 'css/theme-config.css' %}">>
     <link rel="stylesheet" href="{% static 'css/animations.css' %}">
 
     {% block extra_css %}{% endblock %}
@@ -128,13 +132,15 @@
         </div>
     </footer>
 
-    <!-- External JavaScript Files -->
+    <!-- External JavaScript Files - Deferred for better performance -->
     <!-- DOM Utilities: Generic helper functions for DOM manipulation -->
-    <script src="{% static 'javascript/dom-utils.js' %}"></script>
+    <script src="{% static 'javascript/dom-utils.js' %}" defer></script>
     <!-- Navigation: Mobile menu and current page highlighting -->
-    <script src="{% static 'javascript/navigation.js' %}"></script>
+    <script src="{% static 'javascript/navigation.js' %}" defer></script>
     <!-- Form Validation: Real-time form field validation and submission handling -->
-    <script src="{% static 'javascript/form-validation.js' %}"></script>
+    <script src="{% static 'javascript/form-validation.js' %}" defer></script>
+</body>
+</html>
 
     {% block extra_js %}{% endblock %}
 </body>

@@ -143,6 +143,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Media files
 MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # Stripe
@@ -177,4 +178,38 @@ SITE_URL = "http://127.0.0.1:8000"
 
 # Google reCAPTCHA settings
 RECAPTCHA_PUBLIC_KEY = config("RECAPTCHA_PUBLIC_KEY", default="")
+
+# Performance Optimization
+# Database connection pooling
+if not DEBUG:
+    CONN_MAX_AGE = 600
+    
+# Caching - Use in-memory caching for development, Redis for production
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'aura-cache',
+    }
+}
+
+# Session caching
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_CACHE_ALIAS = 'default'
+
+# Template caching
+TEMPLATES[0]['OPTIONS']['loaders'] = [
+    ('django.template.loaders.cached.Loader', [
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    ]),
+]
+
+# Static files optimization
+if DEBUG:
+    # Development: Serve static files directly
+    pass
+else:
+    # Production: Use WhiteNoise for compression
+    WHITENOISE_COMPRESS = True
+    WHITENOISE_SKIP_NONEXISTENT_FILES = True
 RECAPTCHA_PRIVATE_KEY = config("RECAPTCHA_PRIVATE_KEY", default="")

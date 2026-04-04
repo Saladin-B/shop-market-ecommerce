@@ -12,10 +12,37 @@ class WhatsAppAlertAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'shop', 'price', 'stock', 'created_at']
+    list_display = ['name', 'shop', 'price', 'stock', 'has_image', 'created_at']
     list_filter = ['shop', 'created_at']
     search_fields = ['name', 'shop__shop_name']
-    readonly_fields = ['created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at', 'image_preview']
+    fieldsets = (
+        ('Product Info', {
+            'fields': ('shop', 'name', 'description', 'price', 'stock')
+        }),
+        ('Image', {
+            'fields': ('image', 'image_preview'),
+            'description': 'Upload a JPG or PNG image. Images will be stored in media/products/'
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def has_image(self, obj):
+        """Show if product has an image"""
+        return bool(obj.image)
+    has_image.short_description = 'Has Image'
+    has_image.boolean = True
+    
+    def image_preview(self, obj):
+        """Display image preview in admin"""
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="200" height="200" style="object-fit: cover; border-radius: 8px;"/>'
+        return 'No image uploaded'
+    image_preview.allow_tags = True
+    image_preview.short_description = 'Image Preview'
 
 
 @admin.register(Cart)
