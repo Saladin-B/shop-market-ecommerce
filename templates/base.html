@@ -5,148 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Aura - Premium Fragrances{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        background: '#FDFCF8',
-                        foreground: '#2C2C24',
-                        primary: {
-                            DEFAULT: '#5D7052',
-                            foreground: '#F3F4F1',
-                        },
-                        secondary: {
-                            DEFAULT: '#C18C5D',
-                            foreground: '#FFFFFF',
-                        },
-                        accent: {
-                            DEFAULT: '#E6DCCD',
-                            foreground: '#4A4A40',
-                        },
-                        muted: {
-                            DEFAULT: '#F0EBE5',
-                            foreground: '#78786C',
-                        },
-                        border: '#DED8CF',
-                        destructive: '#A85448',
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(93, 112, 82, 0.15)',
-                        'float': '0 10px 40px -10px rgba(193, 140, 93, 0.2)',
-                    },
-                    fontFamily: {
-                        sans: ['Nunito', 'sans-serif'],
-                        serif: ['Fraunces', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&family=Nunito:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --background: #FDFCF8;
-            --foreground: #2C2C24;
-            --primary: #5D7052;
-            --secondary: #C18C5D;
-            --border: #DED8CF;
+            --background: #FFFFFF;
+            --foreground: #000000;
+            --muted: #F5F5F5;
+            --muted-foreground: #525252;
+            --border: #000000;
+            --border-light: #E5E5E5;
+        }
+
+        * {
+            border-radius: 0px !important;
         }
 
         body {
-            font-family: "Nunito", sans-serif;
+            font-family: "Source Serif 4", Georgia, serif;
             background-color: var(--background);
             color: var(--foreground);
-            position: relative;
-        }
-
-        /* Essential global noise texture overlay */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.04;
-            mix-blend-mode: multiply;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         h1, h2, h3, h4, h5, h6 {
-            font-family: "Fraunces", serif;
+            font-family: "Playfair Display", Georgia, serif;
             font-weight: 600;
+            letter-spacing: -0.025em;
         }
 
-        /* Button styles: Organic */
+        code, pre, .mono {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        /* Subtle horizontal line texture */
+        .texture-lines {
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 1px,
+                rgba(0, 0, 0, 0.015) 1px,
+                rgba(0, 0, 0, 0.015) 2px
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Grid texture */
+        .texture-grid {
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.008) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.008) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Inverted vertical lines for stats */
+        .texture-stats {
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 1px,
+                rgba(255, 255, 255, 0.03) 1px,
+                rgba(255, 255, 255, 0.03) 2px
+            );
+            background-size: 4px 100%;
+        }
+
+        /* Dividers */
+        .divider {
+            height: 4px;
+            background-color: var(--border);
+            width: 100%;
+        }
+
+        .divider-ultra {
+            height: 8px;
+            background-color: var(--border);
+            width: 100%;
+        }
+
+        /* Button styles */
         .btn-primary {
-            @apply bg-primary text-[#F3F4F1] px-8 sm:px-10 py-3 sm:py-[14px] font-bold text-base transition-all duration-300 rounded-full shadow-soft hover:shadow-[0_6px_24px_-4px_rgba(93,112,82,0.25)] hover:scale-105 active:scale-95 cursor-pointer;
+            @apply bg-black text-white px-8 py-4 font-medium tracking-widest uppercase text-sm transition-all duration-100 border-2 border-black hover:bg-white hover:text-black cursor-pointer;
         }
 
         .btn-secondary {
-            @apply bg-transparent text-secondary px-8 sm:px-10 py-3 sm:py-[14px] font-bold text-base transition-all duration-300 border-2 border-secondary rounded-full hover:scale-105 active:scale-95 cursor-pointer;
+            @apply bg-transparent text-black px-8 py-4 font-medium tracking-widest uppercase text-sm transition-all duration-100 border-2 border-black hover:bg-black hover:text-white cursor-pointer;
         }
 
         /* Input styles */
         .input-base {
-            @apply bg-white/50 text-foreground px-6 py-3 rounded-full border border-border placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 transition-all duration-300 h-12;
+            @apply bg-white text-black px-4 py-3 border-b-2 border-black placeholder-gray-500 placeholder-italic focus:outline-none focus:border-b-4 transition-all duration-100;
         }
 
         /* Link focus state */
-        a:focus-visible, button:focus-visible {
-            outline: none;
-            @apply ring-2 ring-primary ring-offset-2;
+        a:focus-visible {
+            outline: 3px solid var(--foreground);
+            outline-offset: 3px;
         }
 
-        /* Feature card */
+        button:focus-visible {
+            outline: 3px solid var(--foreground);
+            outline-offset: 3px;
+        }
+
+        /* Feature card hover */
         .feature-card {
-            @apply transition-all duration-500 border border-border/50 p-8 rounded-[2rem] shadow-soft bg-[#FEFEFA] relative overflow-hidden;
+            @apply transition-all duration-100 border-2 border-black p-8;
         }
 
         .feature-card:hover {
-            @apply -translate-y-1 shadow-[0_20px_40px_-10px_rgba(93,112,82,0.15)];
+            @apply bg-black text-white;
         }
-
-        /* Blob custom shapes */
-        .blob-bg {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-        }
-
-        /* Glassmorphic Nav */
-        .nav-glass {
-            @apply sticky top-4 bg-white/70 backdrop-blur-md border border-border/50 rounded-full shadow-sm z-50 transition-all duration-300;
-        }
-
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
 <body class="texture-lines">
     <!-- Navigation -->
-    <nav class="max-w-6xl mx-auto mt-4 px-6 md:px-8 py-4 flex items-center justify-between nav-glass">
-            <a href="/" class="text-3xl font-bold text-primary flex items-center gap-2">
-                <div class="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">✨</div>
-                Aura
-            </a>
+    <nav class="border-b-2 border-black">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 py-6 flex items-center justify-between">
+            <a href="/" class="text-3xl font-bold" style="font-family: 'Playfair Display', serif;">✨ Aura</a>
             
             <div class="hidden md:flex items-center gap-8">
-                <a href="/" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Home</a>
+                <a href="/" class="text-sm font-medium hover:underline">Home</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'payments:products' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Products</a>
-                    <a href="{% url 'payments:my_cart' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Cart</a>
-                    <a href="{% url 'messaging:message_list' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Messages</a>
-                    <a href="{% url 'accounts:logout' %}" class="text-sm font-bold text-muted-foreground hover:text-primary transition-colors">Logout</a>
+                    <a href="{% url 'payments:products' %}" class="text-sm font-medium hover:underline">Products</a>
+                    <a href="{% url 'payments:my_cart' %}" class="text-sm font-medium hover:underline">Cart</a>
+                    <a href="{% url 'messaging:message_list' %}" class="text-sm font-medium hover:underline">Messages</a>
+                    <a href="{% url 'accounts:logout' %}" class="text-sm font-medium hover:underline">Logout</a>
                 {% else %}
-                    <a href="{% url 'accounts:login' %}" class="text-sm font-bold text-foreground hover:text-primary transition-colors">Login</a>
-                    <a href="{% url 'accounts:register' %}" class="btn-primary py-2 px-6 shadow-none">Register</a>
+                    <a href="{% url 'accounts:login' %}" class="text-sm font-medium hover:underline">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="text-sm font-medium hover:underline">Register</a>
                 {% endif %}
             </div>
-        </nav>
+        </div>
+    </nav>
 
     <!-- Messages -->
     {% if messages %}
