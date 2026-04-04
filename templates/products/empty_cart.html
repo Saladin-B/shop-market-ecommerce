@@ -1,45 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}Shopping Cart - Aura{% endblock %}
-
-{% block extra_css %}
-<style>
-    .empty-cart-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 60vh;
-        text-align: center;
-    }
-    .empty-cart-container h2 {
-        color: #666;
-        margin-bottom: 20px;
-    }
-    .empty-cart-container p {
-        color: #999;
-        margin-bottom: 30px;
-    }
-    .empty-cart-container a {
-        background-color: #6c5ce7;
-        color: white;
-        padding: 12px 30px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    .empty-cart-container a:hover {
-        background-color: #5f3dc4;
-    }
-</style>
-{% endblock %}
+{% block title %}Empty Cart - Aura{% endblock %}
 
 {% block content %}
-<main class="container my-5">
-    <div class="empty-cart-container">
-        <h2>🛒 Your Cart is Empty</h2>
-        <p>Start shopping to add items to your cart!</p>
-        <a href="{% url 'payments:products' %}">Continue Shopping</a>
+<div class="py-32 px-6 md:px-8 lg:px-12">
+    <div class="max-w-2xl mx-auto text-center">
+        <div class="text-8xl mb-8">✨</div>
+        
+        <h1 class="text-6xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">
+            Your Cart is Empty
+        </h1>
+        
+        <p class="text-xl text-gray-700 mb-12 leading-relaxed">
+            Discover our collection of premium fragrances and start your journey to find your signature scent.
+        </p>
+        
+        <div class="border-8 border-black p-12 mb-12">
+            <p class="text-sm font-mono tracking-widest mb-4">GET STARTED</p>
+            <a href="{% url 'payments:products' %}" class="btn-primary inline-block">
+                Browse Collection
+            </a>
+        </div>
+        
+        <div class="flex justify-center gap-6">
+            <a href="/" class="btn-secondary">Back to Home</a>
+        </div>
     </div>
-</main>
+</div>
 {% endblock %}
+
