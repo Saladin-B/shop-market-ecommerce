@@ -10,9 +10,13 @@ def products(request):
     """Display all products for authenticated users."""
     products = Product.objects.all()
     user_cart = None
-    if request.user.shopprofile:
-        # Get user's first cart (if any)
-        user_cart = Cart.objects.filter(user=request.user).first()
+    # Try to get user's ShopProfile, if it exists get their first cart
+    try:
+        if ShopProfile.objects.filter(owner=request.user).exists():
+            # Get user's first cart (if any)
+            user_cart = Cart.objects.filter(user=request.user).first()
+    except ShopProfile.DoesNotExist:
+        pass
     return render(request, 'products/product_list.html', {
         'products': products,
         'user_cart': user_cart
