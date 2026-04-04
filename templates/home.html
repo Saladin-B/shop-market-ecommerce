@@ -1,81 +1,142 @@
 {% extends 'base.html' %}
 
-{% block title %}Aura - Premium Fragrances{% endblock %}
+{% block title %}Aura - Organic Fragrances{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<div class="relative py-32 px-6 md:px-8 lg:px-12 overflow-hidden flex items-center justify-center min-h-[85vh]">
-    <!-- Background Blob -->
-    <div class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-secondary/10 blur-3xl blob-bg z-0"></div>
-    <div class="absolute bottom-10 right-10 w-[400px] h-[400px] bg-primary/10 blur-3xl blob-bg z-0"></div>
+<section class="relative py-24 md:py-32 px-6 md:px-8 lg:px-12 overflow-hidden">
+    <!-- Background Blobs -->
+    <div class="absolute top-0 left-0 w-[40rem] h-[40rem] bg-accent/30 rounded-organic-1 blur-3xl opacity-60 -translate-x-1/4 -translate-y-1/4"></div>
+    <div class="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-primary/10 rounded-organic-2 blur-3xl opacity-60 translate-x-1/4 translate-y-1/4"></div>
 
-    <div class="max-w-6xl mx-auto text-center relative z-10">
-        <div class="mb-10">
-            <div class="w-20 h-20 bg-primary/20 flex items-center justify-center mx-auto mb-8 rounded-full shadow-soft shadow-primary/20">
-                <span class="text-3xl text-primary">✨</span>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+        <div class="mb-8 flex justify-center">
+            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-soft">
+               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
         </div>
-        
-        <h1 class="text-6xl md:text-8xl font-bold leading-tight mb-8 text-foreground" style="font-family: 'Fraunces', serif;">
-            Discover your<br/><span class="text-primary italic font-normal">signature scent</span>
+
+        <h1 class="text-6xl md:text-8xl font-bold font-serif leading-[1.1] mb-8 text-foreground tracking-tight">
+            Aura
         </h1>
-        
-        <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
-            Curated fragrances from leading designers, crafted to tell your unique story through the natural power of scent.
+
+        <p class="text-2xl md:text-3xl max-w-2xl mx-auto mb-6 text-foreground/90 font-medium leading-relaxed font-serif">
+            Discover your signature scent
         </p>
-        
-        <div class="flex flex-col sm:flex-row justify-center gap-6 items-center">
-            {% if user.is_authenticated %}
-                <a href="{% url 'payments:products' %}" class="btn-primary">Shop Collection</a>
-            {% else %}
-                <a href="{% url 'accounts:register' %}" class="btn-primary">Get Started</a>
-                <a href="{% url 'accounts:login' %}" class="btn-secondary">Sign In</a>
+
+        <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
+            Curated fragrances drawn from the earth. Crafted sustainably, worn beautifully. Designed to harmonize with your natural chemistry.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+            <a href="{% url 'payments:products' %}" class="btn-primary text-lg px-10 h-14">Explore Collection</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}" class="btn-secondary text-lg px-10 h-14">Join Aura</a>
             {% endif %}
         </div>
     </div>
-</div>
+</section>
 
 <!-- Collections Section -->
-<section class="py-32 px-6 md:px-8 lg:px-12 bg-muted/30 relative">
+<section class="py-24 md:py-32 px-6 md:px-8 lg:px-12 bg-white/40 relative z-10 border-t border-border/30">
     <div class="max-w-7xl mx-auto">
-        <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center text-foreground" style="font-family: 'Fraunces', serif;">
-            Curated Collections
-        </h2>
-        
+        <div class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold font-serif text-foreground mb-4">Collections</h2>
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto">Scents inspired by natural landscapes, crafted to evolve organically on your skin.</p>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <!-- Collection 1 -->
-            <div class="feature-card group" style="border-radius: 4rem 2rem 5rem 2rem;">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-3xl mb-8 group-hover:bg-primary transition-colors duration-500">
-                    <span class="group-hover:scale-110 transition-transform duration-300">🌸</span>
+            <div class="card-organic group cursor-pointer border-t-[3px] border-t-primary/20" style="border-radius: 2rem 5rem 2rem 2rem;">
+                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M12 12 8 8"/><path d="M12 12l4-4"/><path d="M12 12l-4 4"/><path d="M12 12l4 4"/></svg>
                 </div>
-                <h3 class="text-2xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors font-serif">Floral</h3>
-                <p class="text-muted-foreground leading-relaxed mb-8">Delicate and elegant fragrances inspired by blooming gardens. Perfect for those who embrace timeless refinement.</p>
-                <div class="mt-auto">
-                    <span class="inline-block px-4 py-2 bg-[#F3F4F1] text-primary rounded-full text-sm font-bold">Starting at £29</span>
+                <h3 class="text-3xl font-bold font-serif text-foreground mb-4">Floral & Botany</h3>
+                <p class="text-muted-foreground leading-relaxed mb-8 text-lg">Delicate, timeless fragrances inspired by blooming gardens and wild meadows.</p>
+                <div class="flex items-center text-primary font-bold gap-2 group-hover:gap-4 transition-all duration-500">
+                    <span>Explore Botanic</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </div>
             </div>
-            
+
             <!-- Collection 2 -->
-            <div class="feature-card group" style="border-radius: 2rem 5rem 2rem 4rem;">
-                <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-3xl mb-8 group-hover:bg-secondary transition-colors duration-500">
-                    <span class="group-hover:scale-110 transition-transform duration-300">🌴</span>
+            <div class="card-organic group cursor-pointer bg-accent/20 border-t-[3px] border-t-secondary/20" style="border-radius: 4rem 2rem 4rem 2rem;">
+                <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-8 group-hover:bg-secondary group-hover:text-white transition-colors duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m2 12 20 0"/><path d="M2 6l20 12"/><path d="M2 18 22 6"/></svg>
                 </div>
-                <h3 class="text-2xl font-bold mb-4 text-foreground group-hover:text-secondary transition-colors font-serif">Exotic</h3>
-                <p class="text-muted-foreground leading-relaxed mb-8">Bold and mysterious scents from around the world. Crafted naturally for the adventurous and unconventional.</p>
-                <div class="mt-auto">
-                    <span class="inline-block px-4 py-2 bg-[#F3F4F1] text-secondary rounded-full text-sm font-bold">Starting at £49</span>
+                <h3 class="text-3xl font-bold font-serif text-foreground mb-4">Earth & Loam</h3>
+                <p class="text-muted-foreground leading-relaxed mb-8 text-lg">Deep, grounded scents drawing from rich soil, petrichor, and ancient forests.</p>
+                <div class="flex items-center text-secondary font-bold gap-2 group-hover:gap-4 transition-all duration-500">
+                    <span>Explore Earth</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </div>
             </div>
-            
+
             <!-- Collection 3 -->
-            <div class="feature-card group" style="border-radius: 5rem 2rem 4rem 2rem;">
-                <div class="w-16 h-16 rounded-2xl bg-accent/30 flex items-center justify-center text-3xl mb-8 group-hover:bg-accent-foreground transition-colors duration-500">
-                    <span class="group-hover:scale-110 transition-transform duration-300">🌿</span>
+            <div class="card-organic group cursor-pointer bg-muted/40 border-t-[3px] border-t-foreground/10" style="border-radius: 2rem 2rem 5rem 2rem;">
+                <div class="w-16 h-16 rounded-2xl bg-foreground/5 flex items-center justify-center text-foreground mb-8 group-hover:bg-foreground group-hover:text-white transition-colors duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 0 0 10-10H2a10 10 0 0 0 10 10z"/><path d="M12 12a10 10 0 0 0 10-10H2a10 10 0 0 0 10 10z"/></svg>
                 </div>
-                <h3 class="text-2xl font-bold mb-4 text-foreground group-hover:text-accent-foreground transition-colors font-serif">Fresh Earth</h3>
-                <p class="text-muted-foreground leading-relaxed mb-8">Crisp and refreshing fragrances for everyday elegance. Understated sophistication drawn from the forest floor.</p>
-                <div class="mt-auto">
-                    <span class="inline-block px-4 py-2 bg-[#F3F4F1] text-accent-foreground rounded-full text-sm font-bold">Starting at £35</span>
+                <h3 class="text-3xl font-bold font-serif text-foreground mb-4">Water & Air</h3>
+                <p class="text-muted-foreground leading-relaxed mb-8 text-lg">Crisp, refreshing streams, morning mist, and the vitality of clear skies.</p>
+                <div class="flex items-center text-foreground font-bold gap-2 group-hover:gap-4 transition-all duration-500">
+                    <span>Explore Elements</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Rooted in Nature Section -->
+<section class="bg-primary text-primary-foreground py-32 px-6 md:px-8 lg:px-12 relative overflow-hidden">
+    <div class="absolute inset-0 mix-blend-overlay opacity-30" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');"></div>
+    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 bg-primary-foreground/5 rounded-organic-3 blur-3xl opacity-60"></div>
+    
+    <div class="max-w-6xl mx-auto relative z-10">
+        <div class="text-center mb-24">
+            <h2 class="text-4xl md:text-6xl font-bold font-serif mb-6 drop-shadow-sm">Rooted in Nature</h2>
+            <p class="text-primary-foreground max-w-2xl mx-auto text-xl opacity-90">We believe in creating scents that honor the earth and evoke profound connection.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16">
+            <div class="flex gap-6 group">
+                <div class="w-14 h-14 flex-shrink-0 rounded-full bg-primary-foreground/10 text-primary-foreground flex items-center justify-center transition-all duration-500 group-hover:bg-primary-foreground group-hover:text-primary">
+                    <span class="font-serif italic text-2xl">1</span>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold font-serif mb-3">Ethical Sourcing</h3>
+                    <p class="text-primary-foreground/80 leading-relaxed text-lg">Ingredients are gathered responsibly, ensuring the ecosystems and communities that provide them thrive.</p>
+                </div>
+            </div>
+
+            <div class="flex gap-6 group">
+                <div class="w-14 h-14 flex-shrink-0 rounded-full bg-primary-foreground/10 text-primary-foreground flex items-center justify-center transition-all duration-500 group-hover:bg-primary-foreground group-hover:text-primary">
+                    <span class="font-serif italic text-2xl">2</span>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold font-serif mb-3">Artisan Craft</h3>
+                    <p class="text-primary-foreground/80 leading-relaxed text-lg">Our perfumers blend using traditional methods, leaning into patience over mass production.</p>
+                </div>
+            </div>
+
+            <div class="flex gap-6 group">
+                <div class="w-14 h-14 flex-shrink-0 rounded-full bg-primary-foreground/10 text-primary-foreground flex items-center justify-center transition-all duration-500 group-hover:bg-primary-foreground group-hover:text-primary">
+                    <span class="font-serif italic text-2xl">3</span>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold font-serif mb-3">Clean Formulation</h3>
+                    <p class="text-primary-foreground/80 leading-relaxed text-lg">Free from harsh synthetics. We let the raw, natural beauty of our botanicals speak for themselves.</p>
+                </div>
+            </div>
+
+            <div class="flex gap-6 group">
+                <div class="w-14 h-14 flex-shrink-0 rounded-full bg-primary-foreground/10 text-primary-foreground flex items-center justify-center transition-all duration-500 group-hover:bg-primary-foreground group-hover:text-primary">
+                    <span class="font-serif italic text-2xl">4</span>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold font-serif mb-3">Sustainable Packaging</h3>
+                    <p class="text-primary-foreground/80 leading-relaxed text-lg">Recycled glass, unbleached paper, and compostable materials ensure your luxury leaves no trace.</p>
                 </div>
             </div>
         </div>
@@ -83,45 +144,32 @@
 </section>
 
 <!-- Final CTA -->
-<section class="py-32 px-6 md:px-8 lg:px-12 bg-[#FEFEFA] relative overflow-hidden">
-    <!-- Curved SVG divider top -->
-    <svg class="absolute top-0 left-0 w-full text-muted/30" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 0C480 98.6667 960 98.6667 1440 0V74H0V0Z" fill="currentColor"/>
-    </svg>
-
-    <div class="max-w-4xl mx-auto text-center relative z-10 mt-12">
-        <h2 class="text-5xl md:text-6xl font-bold mb-8 text-foreground" style="font-family: 'Fraunces', serif;">
-            Find Your Scent
-        </h2>
-        
-        <p class="text-xl text-muted-foreground leading-relaxed mb-16 max-w-2xl mx-auto">
-            Explore our complete collection of premium fragrances. Each scent is waiting to become part of your story.
-        </p>
-        
-        <div class="bg-white/60 backdrop-blur-md border border-border p-12 mb-16 rounded-[3rem] shadow-float relative">
-            <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground px-6 py-2 rounded-full font-bold text-sm tracking-wide shadow-sm">NEW MEMBERS</div>
+<section class="py-32 px-6 md:px-8 lg:px-12 relative overflow-hidden bg-background">
+    <div class="max-w-4xl mx-auto relative z-10">
+        <div class="bg-accent/20 rounded-[3rem] p-12 md:p-20 text-center border border-border/50 shadow-soft relative overflow-hidden" style="border-radius: 4rem 2rem 5rem 3rem;">
+            <!-- Inner blob -->
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/60 rounded-organic-3 blur-2xl pointer-events-none"></div>
             
-            <h3 class="text-3xl font-bold mb-4 mt-4 text-foreground" style="font-family: 'Fraunces', serif;">Welcome to Aura</h3>
-            <p class="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto">Subscribe for exclusive access to new launches, organic blends, and curated recommendations.</p>
-            
-            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" method="post" action="#">
-                <input 
-                    type="email" 
-                    placeholder="your@email.com" 
-                    class="input-base flex-grow"
-                    required
-                />
-                <button type="submit" class="btn-primary whitespace-nowrap">Subscribe</button>
-            </form>
-        </div>
-        
-        <div class="flex justify-center gap-6">
-            {% if not user.is_authenticated %}
-                <a href="{% url 'accounts:register' %}" class="btn-primary">Create Account</a>
-                <a href="{% url 'accounts:login' %}" class="btn-secondary">Sign In</a>
-            {% else %}
-                <a href="{% url 'payments:products' %}" class="btn-primary">Browse Products</a>
-            {% endif %}
+            <div class="relative z-10">
+                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </div>
+                <p class="text-primary font-bold tracking-widest uppercase text-sm mb-6">The Aura Collective</p>
+                <h2 class="text-4xl md:text-5xl font-bold font-serif text-foreground mb-6">Deepen Your Connection</h2>
+                <p class="text-lg text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto">
+                    Subscribe to receive intimate stories of our sourcing trips, early access to seasonal batches, and mindful living inspiration.
+                </p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" method="get" action="#">
+                    <input
+                        type="email"
+                        placeholder="connect@aura.com"
+                        class="input-base flex-grow"
+                        required
+                    />
+                    <button type="submit" class="btn-primary whitespace-nowrap">Join Collective</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
