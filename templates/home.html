@@ -1,99 +1,149 @@
 {% extends 'base.html' %}
 
-{% block title %}Aura - Premium Fragrances Online{% endblock %}
+{% block title %}Aura - Premium Fragrances{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<div class="hero">
-    <h1>✨ Aura</h1>
-    <p>Discover Your Signature Scent</p>
-    <p style="font-size: 1rem; margin-bottom: 30px;">Premium fragrances curated for every mood and occasion</p>
-    {% if user.is_authenticated %}
-        <a href="{% url 'payments:products' %}" class="btn btn-primary-custom">Shop Now</a>
-    {% else %}
-        <a href="{% url 'accounts:register' %}" class="btn btn-primary-custom">Get Started</a>
-    {% endif %}
-</div>
-
-<!-- Featured Section -->
-<div style="margin-top: 60px;">
-    <div class="row mb-5">
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 h-100" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                    🌸
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Floral Collection</h5>
-                    <p class="card-text">Delicate and elegant fragrances inspired by blooming gardens.</p>
-                </div>
-            </div>
+<div class="py-32 px-6 md:px-8 lg:px-12">
+    <div class="max-w-6xl mx-auto text-center">
+        <div class="mb-8">
+            <div class="w-16 h-16 border-4 border-black mx-auto mb-8"></div>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 h-100" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                    🌴
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Exotic Blends</h5>
-                    <p class="card-text">Bold and exotic scents from around the world.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 h-100" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                    ❄️
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Fresh Notes</h5>
-                    <p class="card-text">Crisp and refreshing fragrances for everyday wear.</p>
-                </div>
-            </div>
+        
+        <h1 class="text-8xl md:text-9xl font-bold leading-none mb-8" style="font-family: 'Playfair Display', serif;">
+            Aura
+        </h1>
+        
+        <p class="text-xl md:text-2xl max-w-2xl mx-auto mb-4 leading-relaxed">
+            Discover your signature scent
+        </p>
+        
+        <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-12">
+            Curated fragrances from leading designers. Each scent tells a story.
+        </p>
+        
+        <div class="flex justify-center gap-6">
+            {% if user.is_authenticated %}
+                <a href="{% url 'payments:products' %}" class="btn-primary">Shop Collection</a>
+            {% else %}
+                <a href="{% url 'accounts:register' %}" class="btn-primary">Get Started</a>
+                <a href="{% url 'accounts:login' %}" class="btn-secondary">Sign In</a>
+            {% endif %}
         </div>
     </div>
 </div>
 
-<!-- Features Section -->
-<div style="background-color: #f0f0f0; padding: 60px 0; margin-top: 60px; margin-left: -12px; margin-right: -12px; margin-bottom: 60px;">
-    <div class="container">
-        <h2 style="text-align: center; margin-bottom: 50px; color: #333;">Why Choose Aura?</h2>
-        <div class="row">
-            <div class="col-md-3 text-center mb-4">
-                <div style="font-size: 3rem; margin-bottom: 15px;">💎</div>
-                <h5>Premium Quality</h5>
-                <p style="color: #666;">Authentic fragrances from leading designers</p>
+<!-- Divider -->
+<div class="divider-ultra"></div>
+
+<!-- Collections Section -->
+<section class="py-32 px-6 md:px-8 lg:px-12 texture-grid">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-5xl md:text-6xl font-bold mb-20 text-center" style="font-family: 'Playfair Display', serif;">
+            Collections
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Collection 1 -->
+            <div class="feature-card">
+                <div class="text-4xl mb-6">🌸</div>
+                <h3 class="text-3xl font-bold mb-4" style="font-family: 'Playfair Display', serif;">Floral</h3>
+                <p class="text-base leading-relaxed mb-6">Delicate and elegant fragrances inspired by blooming gardens. Perfect for those who embrace timeless refinement.</p>
+                <p class="text-sm text-gray-600 font-mono">Starting at £29</p>
             </div>
-            <div class="col-md-3 text-center mb-4">
-                <div style="font-size: 3rem; margin-bottom: 15px;">🚚</div>
-                <h5>Fast Delivery</h5>
-                <p style="color: #666;">Quick and secure shipping to your door</p>
+            
+            <!-- Collection 2 -->
+            <div class="feature-card">
+                <div class="text-4xl mb-6">🌴</div>
+                <h3 class="text-3xl font-bold mb-4" style="font-family: 'Playfair Display', serif;">Exotic</h3>
+                <p class="text-base leading-relaxed mb-6">Bold and mysterious scents from around the world. For the adventurous and unconventional.</p>
+                <p class="text-sm text-gray-600 font-mono">Starting at £49</p>
             </div>
-            <div class="col-md-3 text-center mb-4">
-                <div style="font-size: 3rem; margin-bottom: 15px;">💯</div>
-                <h5>Best Prices</h5>
-                <p style="color: #666;">Competitive prices with regular discounts</p>
-            </div>
-            <div class="col-md-3 text-center mb-4">
-                <div style="font-size: 3rem; margin-bottom: 15px;">📱</div>
-                <h5>Easy Ordering</h5>
-                <p style="color: #666;">Simple checkout and order tracking</p>
+            
+            <!-- Collection 3 -->
+            <div class="feature-card">
+                <div class="text-4xl mb-6">❄️</div>
+                <h3 class="text-3xl font-bold mb-4" style="font-family: 'Playfair Display', serif;">Fresh</h3>
+                <p class="text-base leading-relaxed mb-6">Crisp and refreshing fragrances for everyday elegance. Understated sophistication in a bottle.</p>
+                <p class="text-sm text-gray-600 font-mono">Starting at £35</p>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- CTA Section -->
-<div style="text-align: center; margin-top: 60px; margin-bottom: 60px;">
-    <h2 style="color: #333; margin-bottom: 20px;">Ready to Find Your Signature Scent?</h2>
-    <p style="color: #666; margin-bottom: 30px; font-size: 1.1rem;">Browse our collection or subscribe for WhatsApp alerts on new arrivals</p>
-    <div>
-        {% if user.is_authenticated %}
-            <a href="{% url 'payments:products' %}" class="btn btn-lg" style="background-color: #6c5ce7; color: white; margin-right: 10px; padding: 12px 30px;">Shop Our Collection</a>
-        {% else %}
-            <a href="{% url 'accounts:register' %}" class="btn btn-lg" style="background-color: #6c5ce7; color: white; padding: 12px 30px;">Create Account</a>
-        {% endif %}
+<!-- Divider -->
+<div class="divider-ultra"></div>
+
+<!-- Why Aura Section -->
+<section class="bg-black text-white py-32 px-6 md:px-8 lg:px-12 texture-stats">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="text-5xl md:text-6xl font-bold mb-20 text-center" style="font-family: 'Playfair Display', serif;">
+            Why Aura
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+                <h3 class="text-2xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">Curated Selection</h3>
+                <p class="text-lg leading-relaxed">Only the finest fragrances from globally recognized designers. Each bottle is a work of olfactory art, carefully selected for quality and authenticity.</p>
+            </div>
+            
+            <div>
+                <h3 class="text-2xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">Expert Curation</h3>
+                <p class="text-lg leading-relaxed">Our team of fragrance experts hand-picks every scent. We understand the nuances that make a fragrance exceptional.</p>
+            </div>
+            
+            <div>
+                <h3 class="text-2xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">Reliable Delivery</h3>
+                <p class="text-lg leading-relaxed">Fast, secure shipping with full protection. Your fragrance arrives in pristine condition, ready to wear.</p>
+            </div>
+            
+            <div>
+                <h3 class="text-2xl font-bold mb-6" style="font-family: 'Playfair Display', serif;">Authentic Guarantee</h3>
+                <p class="text-lg leading-relaxed">100% authentic fragrances from authorized retailers. No counterfeits, no compromises on quality.</p>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<!-- Divider -->
+<div class="divider-ultra"></div>
+
+<!-- Final CTA -->
+<section class="py-32 px-6 md:px-8 lg:px-12">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-5xl md:text-6xl font-bold mb-8" style="font-family: 'Playfair Display', serif;">
+            Find Your Scent
+        </h2>
+        
+        <p class="text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
+            Explore our complete collection of premium fragrances. Each scent is waiting to become part of your story.
+        </p>
+        
+        <div class="border-8 border-black p-12 mb-12">
+            <p class="text-base text-gray-600 mb-4 font-mono tracking-widest">NEW MEMBERS</p>
+            <p class="text-4xl font-bold mb-4" style="font-family: 'Playfair Display', serif;">Welcome to Aura</p>
+            <p class="text-lg leading-relaxed mb-8">Subscribe for exclusive access to new launches and curated recommendations.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4" method="post" action="#">
+                <input 
+                    type="email" 
+                    placeholder="your@email.com" 
+                    class="input-base flex-grow"
+                    required
+                />
+                <button type="submit" class="btn-primary whitespace-nowrap">Subscribe</button>
+            </form>
+        </div>
+        
+        <div class="flex justify-center gap-6">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}" class="btn-primary">Create Account</a>
+                <a href="{% url 'accounts:login' %}" class="btn-secondary">Sign In</a>
+            {% else %}
+                <a href="{% url 'payments:products' %}" class="btn-primary">Browse Products</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
 
 {% endblock %}
