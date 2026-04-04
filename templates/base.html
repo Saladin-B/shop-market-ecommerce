@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Aura - Organic Fragrances{% endblock %}</title>
     
+    <!-- Google Fonts for Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     
+    <!-- Tailwind CSS Framework -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Configuration - Extends default theme with custom colors and styles -->
     <script>
         tailwind.config = {
             theme: {
@@ -42,16 +46,9 @@
         }
     </script>
     
-    <style>
-        body { background-color: theme('colors.background'); color: theme('colors.foreground'); font-family: theme('fontFamily.sans'); position: relative; }
-        h1, h2, h3, h4, h5, h6, .font-serif { font-family: theme('fontFamily.serif'); }
-        body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.04; mix-blend-mode: multiply; }
-        .btn-primary { @apply inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-3 rounded-full font-bold text-base transition-all duration-300 shadow-soft hover:scale-105 hover:-translate-y-0.5 hover:shadow-float active:scale-95 active:translate-y-0 cursor-pointer; }
-        .btn-secondary { @apply inline-flex items-center justify-center bg-transparent text-secondary border-2 border-secondary/50 px-8 py-3 rounded-full font-bold text-base transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-soft active:scale-95 active:translate-y-0 hover:border-secondary hover:bg-secondary/5 cursor-pointer; }
-        .btn-ghost { @apply inline-flex items-center justify-center bg-transparent text-primary px-8 py-3 rounded-full font-bold text-base transition-all duration-300 hover:bg-primary/10 hover:scale-105 active:scale-95 cursor-pointer; }
-        .input-base { @apply w-full bg-white/50 text-foreground px-6 py-3 rounded-full border border-border placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:ring-offset-background transition-all duration-300; }
-        .card-organic { @apply bg-[#FEFEFA] border border-border/50 rounded-[2rem] shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-float px-6 py-8 md:px-8; }
-    </style>
+    <!-- External CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/theme-config.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -130,6 +127,15 @@
             </div>
         </div>
     </footer>
+
+    <!-- External JavaScript Files -->
+    <!-- DOM Utilities: Generic helper functions for DOM manipulation -->
+    <script src="{% static 'javascript/dom-utils.js' %}"></script>
+    <!-- Navigation: Mobile menu and current page highlighting -->
+    <script src="{% static 'javascript/navigation.js' %}"></script>
+    <!-- Form Validation: Real-time form field validation and submission handling -->
+    <script src="{% static 'javascript/form-validation.js' %}"></script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>
