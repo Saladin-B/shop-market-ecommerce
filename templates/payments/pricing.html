@@ -3,6 +3,26 @@
 
 {% block title %}Pricing Plans - Aura Fragrance{% endblock %}
 
+{% block extra_css %}
+<style>
+    .pricing-card {
+        display: flex;
+        flex-direction: column;
+    }
+    .pricing-card .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .pricing-card .list-unstyled {
+        flex-grow: 1;
+    }
+    .pricing-card form {
+        margin-top: auto;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Aura Fragrance Plans</h1>
@@ -17,7 +37,7 @@
     <div class="row">
         <!-- Starter Plan -->
         <div class="col-md-4 mb-4">
-            <div class="card h-100">
+            <div class="card h-100 pricing-card">
                 <div class="card-body">
                     <h5 class="card-title">🌸 Starter</h5>
                     <p class="card-text text-muted">Perfect for new fragrance shops</p>
@@ -46,7 +66,7 @@
         
         <!-- Professional Plan -->
         <div class="col-md-4 mb-4">
-            <div class="card h-100 border-primary">
+            <div class="card h-100 pricing-card border-primary">
                 <div class="card-header bg-primary text-white text-center">
                     <strong>MOST POPULAR</strong>
                 </div>
@@ -80,7 +100,7 @@
         
         <!-- Luxury Plan -->
         <div class="col-md-4 mb-4">
-            <div class="card h-100">
+            <div class="card h-100 pricing-card">
                 <div class="card-body">
                     <h5 class="card-title">💎 Luxury</h5>
                     <p class="card-text text-muted">For premium fragrance boutiques</p>
@@ -96,7 +116,7 @@
                         <li><i class="fas fa-check text-success"></i> API access</li>
                     </ul>
                     
-                    <a href="mailto:support@shopmarket.com" class="btn btn-outline-primary w-100">Contact Sales</a>
+                    <a href="mailto:support@aura.com" class="btn btn-outline-primary w-100">Contact Sales</a>
                 </div>
             </div>
         </div>
