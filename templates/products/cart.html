@@ -114,10 +114,13 @@
                             <span class="text-4xl font-bold text-foreground font-serif">£{{ cart.get_total }}</span>
                         </div>
 
-                        <button disabled class="btn-primary w-full shadow-soft shadow-primary/20 opacity-80 cursor-not-allowed mb-6 flex items-center justify-center gap-2">
-                            <span>Checkout</span>
-                            <span class="text-xs bg-white/20 px-2 py-0.5 rounded ml-2">Coming Soon</span>
-                        </button>
+                        <form method="POST" action="{% url 'payments:checkout' cart.id %}" class="w-full">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-primary w-full shadow-soft shadow-primary/20 mb-6 flex items-center justify-center gap-2">
+                                <span>Proceed to Checkout</span>
+                                <span class="text-xs">→</span>
+                            </button>
+                        </form>
 
                         <div class="flex items-center justify-center gap-2 text-xs text-muted-foreground text-center px-4">
                             <span class="text-primary"></span> Secure, encrypted checkout
