@@ -150,9 +150,23 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Media files
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+if config("CLOUDINARY_URL", default=""):
+    # Production: Use Cloudinary storage
+    MEDIA_URL = "/media/"  # Cloudinary handles actual serving
+    MEDIA_ROOT = BASE_DIR / "media"
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+    
+    # Explicit Cloudinary storage configuration
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME", default=""),
+        'API_KEY': config("CLOUDINARY_API_KEY", default=""),
+        'API_SECRET': config("CLOUDINARY_API_SECRET", default=""),
+    }
+else:
+    # Development/Fallback: Use local file storage
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # Stripe
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="")
