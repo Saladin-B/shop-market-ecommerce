@@ -152,13 +152,14 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Media files
 if config("CLOUDINARY_URL", default=""):
     # Production: Use Cloudinary storage
-    MEDIA_URL = ""  # Cloudinary provides full CDN URLs
+    CLOUDINARY_CLOUD_NAME = config("CLOUDINARY_CLOUD_NAME", default="")
+    MEDIA_URL = f"https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload/"
     MEDIA_ROOT = BASE_DIR / "media"
     DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
     
     # Explicit Cloudinary storage configuration
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME", default=""),
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
         'API_KEY': config("CLOUDINARY_API_KEY", default=""),
         'API_SECRET': config("CLOUDINARY_API_SECRET", default=""),
     }
