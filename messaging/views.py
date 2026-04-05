@@ -139,7 +139,7 @@ def send_message(request):
     
     # Generate QR code
     from .utils import generate_qr_code
-    qr_code = generate_qr_code(shop_profile.unique_slug)
+    qr_code = generate_qr_code(shop_profile.unique_slug, request)
     
     return render(request, 'messaging/send_message.html', {
         'form': form,
