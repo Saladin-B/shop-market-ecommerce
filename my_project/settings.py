@@ -24,6 +24,7 @@ cloudinary.config(
     cloud_name=config("CLOUDINARY_CLOUD_NAME", default=""),
     api_key=config("CLOUDINARY_API_KEY", default=""),
     api_secret=config("CLOUDINARY_API_SECRET", default=""),
+    secure=True
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -150,18 +151,14 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Media files
-if config("CLOUDINARY_URL", default=""):
+CLOUDINARY_ENABLED = bool(config("CLOUDINARY_URL", default=""))
+
+if CLOUDINARY_ENABLED:
     # Production: Use Cloudinary storage
-    MEDIA_URL = ""  # CloudinaryStorage returns full URLs
-    MEDIA_ROOT = BASE_DIR / "media"
     DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-    
-    # Explicit Cloudinary storage configuration
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME", default=""),
-        'API_KEY': config("CLOUDINARY_API_KEY", default=""),
-        'API_SECRET': config("CLOUDINARY_API_SECRET", default=""),
-    }
+    # IMPORTANT: Don't set MEDIA_URL - cloudinary-storage handles it
+    MEDIA_URL = ""
+    MEDIA_ROOT = BASE_DIR / "media"
 else:
     # Development/Fallback: Use local file storage
     MEDIA_URL = "/media/"
