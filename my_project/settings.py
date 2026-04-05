@@ -143,7 +143,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+# Temporarily using default storage for testing
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # Stripe
 STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY", default="")
