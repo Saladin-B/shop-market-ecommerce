@@ -14,17 +14,9 @@ from pathlib import Path
 import os
 from decouple import config
 import dj_database_url
-import cloudinary
 
 if os.path.isfile('env.py'):
     import env
-
-# Configure Cloudinary
-cloudinary.config(
-    cloud_name=config("CLOUDINARY_CLOUD_NAME", default=""),
-    api_key=config("CLOUDINARY_API_KEY", default=""),
-    api_secret=config("CLOUDINARY_API_SECRET", default="")
-)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
