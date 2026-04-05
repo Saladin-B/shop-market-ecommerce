@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop Owner Registration - Aura{% endblock %}
+
+{% block content %}
+<div class="relative py-24 px-6 md:px-8 lg:px-12 flex items-center justify-center min-h-[85vh] overflow-hidden">
+    <!-- Ambient Blob -->
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-secondary/10 blur-3xl blob-bg z-0"></div>
+
+    <div class="w-full max-w-md relative z-10">
+        <div class="text-center mb-10">
+            <div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft text-2xl">
+                <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4 font-serif">Become a Shop Owner</h1>
+            <p class="text-muted-foreground text-lg">For selling your fragrances only</p>
+            <div class="mt-4 p-3 bg-secondary/10 rounded-lg text-sm text-muted-foreground border border-secondary/20">
+                <strong>Note:</strong> Shop owner accounts are for selling only. To buy products, you must create a separate buyer account.
+            </div>
+        </div>
+
+        <div class="bg-white/60 backdrop-blur-md border border-border/50 p-8 md:p-10 rounded-[2.5rem] shadow-float">
+            {% if messages %}
+                <div class="mb-6">
+                    {% for message in messages %}
+                        <div class="p-4 rounded-2xl mb-3 text-sm font-medium {% if message.tags == 'error' %}bg-destructive/10 text-destructive{% else %}bg-secondary/10 text-secondary{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" novalidate class="space-y-5">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="space-y-2">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-foreground">
+                            {{ field.label }}
+                        </label>
+                        {% if field.name == 'shop_name' %}
+                            <input
+                                type="text"
+                                name="{{ field.name }}"
+                                id="{{ field.id_for_label }}"
+                                class="input-base w-full {% if field.errors %}border-destructive focus:ring-destructive/30{% endif %}"
+                                {% if field.value %}value="{{ field.value }}"{% endif %}
+                                placeholder="Your unique shop name"
+                                required
+                            >
+                        {% else %}
+                            <input
+                                type="{{ field.field.widget.input_type|default:'text' }}"
+                                name="{{ field.name }}"
+                                id="{{ field.id_for_label }}"
+                                class="input-base w-full {% if field.errors %}border-destructive focus:ring-destructive/30{% endif %}"
+                                {% if field.value %}value="{{ field.value }}"{% endif %}
+                                {% if field.field.required %}required{% endif %}
+                            >
+                        {% endif %}
+                        {% if field.errors %}
+                            <p class="text-sm font-bold text-destructive mt-1">{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="text-xs text-muted-foreground mt-1">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="pt-6">
+                    <button type="submit" class="btn-secondary w-full shadow-soft shadow-secondary/20">Create Shop Account</button>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center border-t border-border/50 pt-6">
+                <p class="text-muted-foreground mb-4">
+                    Want to buy fragrances? 
+                    <a href="{% url 'accounts:buyer-register' %}" class="text-primary font-bold hover:text-primary/80 transition-colors">Create a buyer account instead</a>
+                </p>
+                <p class="text-muted-foreground">
+                    Already have an account? 
+                    <a href="{% url 'accounts:login' %}" class="text-primary font-bold hover:text-primary/80 transition-colors">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

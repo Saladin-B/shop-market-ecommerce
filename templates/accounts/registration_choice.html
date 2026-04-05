@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Join Aura - Choose Your Role{% endblock %}
+
+{% block content %}
+<div class="relative py-24 px-6 md:px-8 lg:px-12 flex items-center justify-center min-h-[85vh] overflow-hidden">
+    <!-- Ambient Blob -->
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 blur-3xl blob-bg z-0"></div>
+
+    <div class="w-full max-w-3xl relative z-10">
+        <div class="text-center mb-16">
+            <div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft text-2xl"></div>
+            <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4 font-serif">Join Aura</h1>
+            <p class="text-muted-foreground text-lg">Choose how you'd like to join our community</p>
+            <div class="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900">
+                <strong>Important:</strong> Buyer and shop owner accounts are separate. You'll need different accounts to buy and to sell.
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Buyer Registration Option -->
+            <div class="group">
+                <div class="bg-white/60 backdrop-blur-md border border-border/50 p-8 md:p-10 rounded-[2.5rem] shadow-float hover:shadow-lg transition-all h-full flex flex-col">
+                    <div class="flex-1">
+                        <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                            <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-foreground mb-3 font-serif">Buyer Account</h2>
+                        <p class="text-muted-foreground mb-6 leading-relaxed">
+                            Browse our collection of natural fragrances, add items to your cart, and discover your perfect scent.
+                        </p>
+                        <ul class="space-y-3 text-sm text-muted-foreground">
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
+                                Browse all products
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
+                                Manage shopping cart
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
+                                Secure checkout
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-primary rounded-full mr-3"></span>
+                                Track orders
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-destructive rounded-full mr-3"></span>
+                                <span class="text-destructive font-semibold">Cannot sell products</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-8 mt-8 border-t border-border/50">
+                        <a href="{% url 'accounts:buyer-register' %}" class="btn-primary w-full text-center block shadow-soft shadow-primary/20">
+                            Register as Buyer
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shop Owner Registration Option -->
+            <div class="group">
+                <div class="bg-white/60 backdrop-blur-md border border-border/50 p-8 md:p-10 rounded-[2.5rem] shadow-float hover:shadow-lg transition-all h-full flex flex-col">
+                    <div class="flex-1">
+                        <div class="w-14 h-14 bg-secondary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
+                            <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-foreground mb-3 font-serif">Shop Owner Account</h2>
+                        <p class="text-muted-foreground mb-6 leading-relaxed">
+                            Set up your shop, manage products, process orders, and grow your fragrance business with us.
+                        </p>
+                        <ul class="space-y-3 text-sm text-muted-foreground">
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-secondary rounded-full mr-3"></span>
+                                Create your shop
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-secondary rounded-full mr-3"></span>
+                                Manage inventory
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-secondary rounded-full mr-3"></span>
+                                Process orders
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-secondary rounded-full mr-3"></span>
+                                Reach customers
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-1.5 h-1.5 bg-destructive rounded-full mr-3"></span>
+                                <span class="text-destructive font-semibold">Cannot buy products</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-8 mt-8 border-t border-border/50">
+                        <a href="{% url 'accounts:shop-register' %}" class="btn-secondary w-full text-center block shadow-soft shadow-secondary/20">
+                            Register as Shop Owner
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12 border-t border-border/50 pt-8">
+            <p class="text-muted-foreground">
+                Already have an account? 
+                <a href="{% url 'accounts:login' %}" class="text-primary font-bold hover:text-primary/80 transition-colors">Sign in</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
