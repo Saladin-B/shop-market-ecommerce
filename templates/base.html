@@ -11,9 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS Framework -->
+    <!-- Tailwind CSS Framework with Custom Configuration -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind Configuration - Extends default theme with custom colors and styles -->
     <script>
         tailwind.config = {
             theme: {
@@ -43,6 +42,10 @@
                     }
                 }
             }
+        };
+        // Force Tailwind to rebuild with custom config
+        if (window.tailwind) {
+            window.tailwind.restart();
         }
     </script>
     
