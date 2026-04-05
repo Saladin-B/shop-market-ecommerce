@@ -10,7 +10,7 @@ class SubscriberForm(forms.ModelForm):
         required=True,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Enter your phone number',
+            'placeholder': '+44 7700 900 123',
             'type': 'tel'
         })
     )
