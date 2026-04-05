@@ -6,6 +6,7 @@ from .forms import CustomerRegistrationForm
 from django.http import HttpResponse
 
 def index(request):
+    """Placeholder view for accounts app index page."""
     return HttpResponse("Accounts app")
 
 
