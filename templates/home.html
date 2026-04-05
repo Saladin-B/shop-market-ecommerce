@@ -31,7 +31,7 @@
         <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
             <a href="{% url 'payments:products' %}" class="btn-primary text-lg px-10 h-14">Explore Collection</a>
             {% if not user.is_authenticated %}
-                <a href="{% url 'accounts:register' %}" class="btn-secondary text-lg px-10 h-14">Join Aura</a>
+                <a href="{% url 'accounts:registration-choice' %}" class="btn-secondary text-lg px-10 h-14">Join Aura</a>
             {% endif %}
         </div>
     </div>
