@@ -1,49 +1,72 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-            <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-        </filter>
-        <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" style="stop-color:#F3E5AB;stop-opacity:0.3" />
-            <stop offset="100%" style="stop-color:#E8D5A0;stop-opacity:0.1" />
-        </radialGradient>
-    </defs>
+  <defs>
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#D4A574;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#C18C5D;stop-opacity:0.2" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Glow background -->
+  <circle cx="100" cy="100" r="95" fill="url(#glowGradient)" filter="url(#glow)"/>
+  
+  <!-- Decorative circle outline -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#C18C5D" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Lotus flower petals -->
+  <g fill="none" stroke="#C18C5D" stroke-width="1.5" opacity="0.9">
+    <!-- Top petal -->
+    <path d="M 100 50 Q 95 70 100 85 Q 105 70 100 50"/>
     
-    <!-- Background glow -->
-    <circle cx="100" cy="100" r="85" fill="url(#glowGradient)" filter="url(#glow)"/>
+    <!-- Upper right petal -->
+    <path d="M 128 62 Q 118 75 110 85 Q 120 80 128 62"/>
     
-    <!-- Outer circle stroke -->
-    <circle cx="100" cy="100" r="80" fill="none" stroke="#C18C5D" stroke-width="2" opacity="0.4"/>
+    <!-- Lower right petal -->
+    <path d="M 140 100 Q 125 105 112 108 Q 130 110 140 100"/>
     
-    <!-- Inner decorative circle -->
-    <circle cx="100" cy="100" r="70" fill="none" stroke="#C18C5D" stroke-width="1" opacity="0.3"/>
+    <!-- Lower right bottom petal -->
+    <path d="M 128 138 Q 120 120 110 115 Q 120 130 128 138"/>
     
-    <!-- Lotus flower -->
-    <g transform="translate(100, 85)">
-        <!-- Outer petals -->
-        <path d="M 0,-25 Q 8,-20 10,-8 Q 12,-15 15,-22" fill="none" stroke="#C18C5D" stroke-width="2" stroke-linecap="round"/>
-        <path d="M 0,-25 Q -8,-20 -10,-8 Q -12,-15 -15,-22" fill="none" stroke="#C18C5D" stroke-width="2" stroke-linecap="round"/>
-        
-        <!-- Side petals -->
-        <path d="M 20,-8 Q 20,-2 18,8" fill="none" stroke="#C18C5D" stroke-width="2" stroke-linecap="round"/>
-        <path d="M -20,-8 Q -20,-2 -18,8" fill="none" stroke="#C18C5D" stroke-width="2" stroke-linecap="round"/>
-        
-        <!-- Inner petals -->
-        <path d="M 12,5 Q 10,12 5,15" fill="none" stroke="#C18C5D" stroke-width="2" stroke-linecap="round"/>
-        <path d="M -12,5 Q -10,12 -5,15" fill="none" stroke="#C18C5D" stroke-width="2" stroke-linecap="round"/>
-        
-        <!-- Center bloom -->
-        <circle cx="0" cy="0" r="3" fill="#C18C5D"/>
-    </g>
+    <!-- Bottom petal -->
+    <path d="M 100 150 Q 105 130 100 115 Q 95 130 100 150"/>
     
-    <!-- Decorative dots -->
-    <circle cx="50" cy="50" r="1.5" fill="#C18C5D" opacity="0.4"/>
-    <circle cx="150" cy="50" r="1.5" fill="#C18C5D" opacity="0.4"/>
-    <circle cx="50" cy="150" r="1.5" fill="#C18C5D" opacity="0.4"/>
-    <circle cx="150" cy="150" r="1.5" fill="#C18C5D" opacity="0.4"/>
+    <!-- Lower left petal -->
+    <path d="M 72 138 Q 80 120 90 115 Q 80 130 72 138"/>
+    
+    <!-- Upper left petal -->
+    <path d="M 60 100 Q 75 105 88 108 Q 70 110 60 100"/>
+    
+    <!-- Upper left top petal -->
+    <path d="M 72 62 Q 82 75 90 85 Q 80 80 72 62"/>
+  </g>
+  
+  <!-- Central lotus bloom -->
+  <g fill="#C18C5D" opacity="0.8">
+    <!-- Inner petals -->
+    <ellipse cx="100" cy="80" rx="4" ry="8"/>
+    <ellipse cx="115" cy="90" rx="4" ry="8" transform="rotate(45 115 90)"/>
+    <ellipse cx="120" cy="105" rx="4" ry="8" transform="rotate(90 120 105)"/>
+    <ellipse cx="115" cy="120" rx="4" ry="8" transform="rotate(135 115 120)"/>
+    <ellipse cx="100" cy="130" rx="4" ry="8" transform="rotate(180 100 130)"/>
+    <ellipse cx="85" cy="120" rx="4" ry="8" transform="rotate(225 85 120)"/>
+    <ellipse cx="80" cy="105" rx="4" ry="8" transform="rotate(270 80 105)"/>
+    <ellipse cx="85" cy="90" rx="4" ry="8" transform="rotate(315 85 90)"/>
+  </g>
+  
+  <!-- Center stamen -->
+  <circle cx="100" cy="105" r="3" fill="#C18C5D" opacity="0.9"/>
+  
+  <!-- Decorative accents -->
+  <g fill="#D4A574" opacity="0.5">
+    <circle cx="65" cy="70" r="2"/>
+    <circle cx="135" cy="70" r="2"/>
+    <circle cx="140" cy="135" r="2"/>
+    <circle cx="60" cy="135" r="2"/>
+  </g>
 </svg>

@@ -46,6 +46,14 @@ def product_list(request, shop_id):
     })
 
 
+def product_detail(request, product_id):
+    """Display detailed information about a product."""
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'products/product_detail.html', {
+        'product': product
+    })
+
+
 @login_required
 def add_to_cart(request, product_id):
     """Add product to cart."""
