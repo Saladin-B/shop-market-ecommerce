@@ -152,7 +152,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Media files
 if config("CLOUDINARY_URL", default=""):
     # Production: Use Cloudinary storage
-    MEDIA_URL = "/media/"  # Cloudinary handles actual serving
+    MEDIA_URL = ""  # Cloudinary provides full CDN URLs
     MEDIA_ROOT = BASE_DIR / "media"
     DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
     
