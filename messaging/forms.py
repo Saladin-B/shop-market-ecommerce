@@ -1,5 +1,5 @@
 from django import forms
-from subscribers.models import Subscriber
+from subscribers.models import Subscriber, MONTH_CHOICES
 from .models import Message, MessageTemplate
 
 
@@ -14,10 +14,10 @@ class SubscriberForm(forms.ModelForm):
             'type': 'tel'
         })
     )
-    birth_month = forms.IntegerField(
+    birth_month = forms.ChoiceField(
         required=True,
+        choices=MONTH_CHOICES,
         widget=forms.Select(
-            choices=[(i, f'Month {i}') for i in range(1, 13)],
             attrs={'class': 'form-select'}
         )
     )
@@ -28,10 +28,10 @@ class SubscriberForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['birth_month'] = forms.IntegerField(
+        self.fields['birth_month'] = forms.ChoiceField(
             required=True,
+            choices=MONTH_CHOICES,
             widget=forms.Select(
-                choices=[(i, f'Month {i}') for i in range(1, 13)],
                 attrs={'class': 'form-select'}
             ),
             label='Birth Month'
