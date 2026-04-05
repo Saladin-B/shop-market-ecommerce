@@ -408,3 +408,45 @@ body::before {
 .rounded-pill {
   border-radius: var(--radius-pill);
 }
+
+/* Logo Styling - Terracotta Color Filter */
+.logo-terracotta {
+  filter: invert(0.4) sepia(1) hue-rotate(350deg) saturate(1.5);
+}
+
+/* Logo Container - Fixed width for about page */
+.logo-container {
+  width: 400px;
+  height: auto;
+}
+
+/* Organic Border Radius Utilities */
+.rounded-organic-1 {
+  border-radius: 2rem 5rem 2rem 2rem;
+}
+
+.rounded-organic-2 {
+  border-radius: 4rem 2rem 4rem 2rem;
+}
+
+.rounded-organic-3 {
+  border-radius: 2rem 2rem 5rem 2rem;
+}
+
+.rounded-organic-4 {
+  border-radius: 4rem 2rem 5rem 3rem;
+}
+
+.rounded-organic-card {
+  border-radius: 2rem;
+}
+
+/* Font Utilities */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* SVG Noise Pattern - Texture overlay */
+.noise-overlay {
+  background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');
+}
