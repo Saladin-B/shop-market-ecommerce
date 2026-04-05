@@ -1,6 +1,5 @@
 from django import forms
 from subscribers.models import Subscriber
-from django_recaptcha.fields import ReCaptchaField
 from .models import Message, MessageTemplate
 
 
@@ -22,7 +21,6 @@ class SubscriberForm(forms.ModelForm):
             attrs={'class': 'form-select'}
         )
     )
-    captcha = ReCaptchaField()
 
     class Meta:
         model = Subscriber
