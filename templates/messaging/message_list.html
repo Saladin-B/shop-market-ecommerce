@@ -3,175 +3,149 @@
 {% block title %}Message History{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>
-            <i class="bi bi-chat-left-text"></i> Message History
-        </h2>
-        <a href="{% url 'messaging:send_message' %}" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i> Send New Message
-        </a>
-    </div>
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-4xl font-bold text-gray-800" style="font-family: 'Fraunces', serif;">Message History</h1>
+                <p class="text-gray-600 mt-1">Manage and track your subscriber messages</p>
+            </div>
+            <a href="{% url 'messaging:send_message' %}" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-200">
+                Send New Message
+            </a>
+        </div>
 
-    {% if page_obj %}
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Message</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Sent Date</th>
-                        <th>Delivery</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for message in page_obj %}
-                    <tr>
-                        <td>
-                            <div class="text-truncate" style="max-width: 300px;" title="{{ message.content }}">
-                                {{ message.content|truncatewords:20 }}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge bg-info">{{ message.get_message_type_display }}</span>
-                        </td>
-                        <td>
-                            {% if message.status == 'sent' %}
-                                <span class="badge bg-success">Sent</span>
-                            {% elif message.status == 'sending' %}
-                                <span class="badge bg-warning">Sending</span>
-                            {% elif message.status == 'scheduled' %}
-                                <span class="badge bg-secondary">Scheduled</span>
-                            {% elif message.status == 'draft' %}
-                                <span class="badge bg-light text-dark">Draft</span>
-                            {% elif message.status == 'failed' %}
-                                <span class="badge bg-danger">Failed</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if message.sent_at %}
-                                {{ message.sent_at|date:"M d, Y H:i" }}
-                            {% elif message.scheduled_for %}
-                                Scheduled: {{ message.scheduled_for|date:"M d, Y H:i" }}
-                            {% else %}
-                                {{ message.created_at|date:"M d, Y H:i" }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if message.delivery_report %}
-                                <small>
-                                    ✓ {{ message.delivery_report.successful }}<br>
-                                    ✗ {{ message.delivery_report.failed }}
-                                </small>
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" 
-                                        data-bs-target="#messageModal{{ message.id }}" title="View Details">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Modal for message details -->
-                    <div class="modal fade" id="messageModal{{ message.id }}" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Message Details</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        {% if page_obj %}
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-100 border-b-2 border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Message</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Type</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Status</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Sent Date</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Delivery</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in page_obj %}
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
+                            <td class="px-6 py-4 text-sm text-gray-800">
+                                <div class="truncate max-w-xs" title="{{ message.content }}">
+                                    {{ message.content|truncatewords:20 }}
                                 </div>
-                                <div class="modal-body">
-                                    <p><strong>Content:</strong></p>
-                                    <p class="bg-light p-3 rounded">{{ message.content }}</p>
-                                    
-                                    <p><strong>Type:</strong> {{ message.get_message_type_display }}</p>
-                                    <p><strong>Status:</strong> {{ message.get_status_display }}</p>
-                                    
-                                    {% if message.scheduled_for %}
-                                    <p><strong>Scheduled for:</strong> {{ message.scheduled_for }}</p>
-                                    {% endif %}
-                                    
-                                    {% if message.delivery_report %}
-                                    <p><strong>Delivery Report:</strong></p>
-                                    <ul>
-                                        <li>Total: {{ message.delivery_report.total_sent }}</li>
-                                        <li>Successful: {{ message.delivery_report.successful }}</li>
-                                        <li>Failed: {{ message.delivery_report.failed }}</li>
-                                    </ul>
-                                    {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm">
+                                <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">{{ message.get_message_type_display }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm">
+                                {% if message.status == 'sent' %}
+                                    <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Sent</span>
+                                {% elif message.status == 'sending' %}
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">Sending</span>
+                                {% elif message.status == 'scheduled' %}
+                                    <span class="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">Scheduled</span>
+                                {% elif message.status == 'draft' %}
+                                    <span class="inline-block bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Draft</span>
+                                {% elif message.status == 'failed' %}
+                                    <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">Failed</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                {% if message.sent_at %}
+                                    {{ message.sent_at|date:"M d, Y H:i" }}
+                                {% elif message.scheduled_for %}
+                                    Scheduled: {{ message.scheduled_for|date:"M d, Y H:i" }}
+                                {% else %}
+                                    {{ message.created_at|date:"M d, Y H:i" }}
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                {% if message.delivery_report %}
+                                    <small>
+                                        ✓ {{ message.delivery_report.successful }}<br>
+                                        ✗ {{ message.delivery_report.failed }}
+                                    </small>
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm">
+                                <button type="button" class="text-orange-500 hover:text-orange-700 font-semibold text-sm" data-bs-toggle="modal" 
+                                        data-bs-target="#messageModal{{ message.id }}" title="View Details">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal for message details -->
+                        <div class="modal fade" id="messageModal{{ message.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Message Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Content:</strong></p>
+                                        <p class="bg-gray-100 p-3 rounded">{{ message.content }}</p>
+                                        
+                                        <p><strong>Type:</strong> {{ message.get_message_type_display }}</p>
+                                        <p><strong>Status:</strong> {{ message.get_status_display }}</p>
+                                        
+                                        {% if message.scheduled_for %}
+                                        <p><strong>Scheduled for:</strong> {{ message.scheduled_for }}</p>
+                                        {% endif %}
+                                        
+                                        {% if message.delivery_report %}
+                                        <p><strong>Delivery Report:</strong></p>
+                                        <ul>
+                                            <li>Total: {{ message.delivery_report.total_sent }}</li>
+                                            <li>Successful: {{ message.delivery_report.successful }}</li>
+                                            <li>Failed: {{ message.delivery_report.failed }}</li>
+                                        </ul>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Pagination -->
         {% if page_obj.has_other_pages %}
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page=1">First</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                    </li>
-                {% endif %}
+        <div class="flex justify-center gap-2 mt-8">
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Previous</a>
+            {% endif %}
 
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ num }}</span>
-                        </li>
-                    {% else %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-                    </li>
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="px-3 py-2 bg-orange-500 text-white rounded-lg font-semibold">{{ num }}</span>
+                {% else %}
+                    <a href="?page={{ num }}" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">{{ num }}</a>
                 {% endif %}
-            </ul>
-        </nav>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Last</a>
+            {% endif %}
+        </div>
         {% endif %}
     {% else %}
-        <div class="alert alert-info text-center" role="alert">
-            <i class="bi bi-inbox"></i> No messages sent yet.
-            <a href="{% url 'messaging:send_message' %}" class="alert-link">Send your first message</a>.
+        <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+            <p class="text-gray-600 text-lg">No messages sent yet.</p>
+            <a href="{% url 'messaging:send_message' %}" class="inline-block mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition">
+                Send your first message
+            </a>
         </div>
     {% endif %}
 </div>
-
-<style>
-    .table {
-        border-collapse: collapse;
-    }
-    .table tbody tr {
-        border-bottom: 1px solid #dee2e6;
-    }
-    .table tbody tr:hover {
-        background-color: #f8f9fa;
-    }
-    .badge {
-        padding: 0.4em 0.6em;
-        font-size: 0.85em;
-    }
-</style>
 {% endblock %}

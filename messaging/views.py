@@ -11,7 +11,6 @@ from .models import Message, DeliveryReport
 from .forms import SubscriberForm, MessageForm
 
 
-@login_required
 @require_http_methods(["GET", "POST"])
 def subscribe_page(request, shop_id):
     """Public page for customers to subscribe to shop messages."""
@@ -134,15 +133,21 @@ def send_message(request):
     else:
         form = MessageForm(shop_profile=shop_profile)
     
-    # Get subscriber count
+    # Get subscriber count and QR code
     subscriber_count = shop_profile.subscribers.filter(is_active=True).count()
     templates = shop_profile.templates.all()
+    
+    # Generate QR code
+    from .utils import generate_qr_code
+    qr_code = generate_qr_code(shop_profile.unique_slug)
     
     return render(request, 'messaging/send_message.html', {
         'form': form,
         'templates': templates,
         'subscriber_count': subscriber_count,
-        'shop_name': shop_profile.shop_name
+        'shop_name': shop_profile.shop_name,
+        'qr_code': qr_code,
+        'shop_slug': shop_profile.unique_slug
     })
 
 
