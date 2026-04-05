@@ -9,7 +9,6 @@ build/
 # Django
 *.log
 db.sqlite3
-/media
 /staticfiles
 
 # Environment
@@ -28,6 +27,3 @@ env.py
 # OS
 .DS_Store
 Thumbs.db
-
-# media
-*.png
