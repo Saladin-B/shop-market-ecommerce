@@ -3,52 +3,52 @@
 {% block title %}Send Message to Subscribers{% endblock %}
 
 {% block content %}
-<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2" style="font-family: 'Fraunces', serif;">
+            <h1 class="text-4xl font-bold font-serif text-foreground mb-2">
                 Send Message to Subscribers
             </h1>
-            <p class="text-gray-600">Broadcast updates to your customer base</p>
+            <p class="text-muted-foreground font-medium">Broadcast updates to your customer base</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Main Form -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="card-base border border-border overflow-hidden">
                     <!-- Alert Section -->
                     {% if subscriber_count == 0 %}
-                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6">
+                        <div class="bg-accent/20 border-l-4 border-accent p-6">
                             <div class="flex">
-                                <div class="text-yellow-600 mr-3">⚠️</div>
+                                <div class="text-accent-foreground mr-3">⚠️</div>
                                 <div>
-                                    <p class="text-yellow-800 font-semibold">No Active Subscribers</p>
-                                    <p class="text-yellow-700 text-sm mt-1">
+                                    <p class="text-accent-foreground font-semibold">No Active Subscribers</p>
+                                    <p class="text-accent-foreground/80 text-sm mt-1">
                                         You don't have any subscribers yet. Use the QR code in the sidebar to let customers subscribe to your messages.
                                     </p>
                                 </div>
                             </div>
                         </div>
                     {% else %}
-                        <div class="bg-blue-50 border-l-4 border-blue-400 p-6">
+                        <div class="bg-primary/10 border-l-4 border-primary p-6">
                             <div class="flex">
-                                <div class="text-blue-600 mr-3">ℹ️</div>
+                                <div class="text-primary mr-3">ℹ️</div>
                                 <div>
-                                    <p class="text-blue-800">Your message will be sent to <strong>{{ subscriber_count }}</strong> active subscriber{{ subscriber_count|pluralize }}</p>
+                                    <p class="text-foreground">Your message will be sent to <strong>{{ subscriber_count }}</strong> active subscriber{{ subscriber_count|pluralize }}</p>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
 
                     <!-- Form -->
-                    <div class="p-8">
+                    <div class="p-6">
                         <form method="post" novalidate class="space-y-6">
                             {% csrf_token %}
                             
                             <!-- Non-field errors -->
                             {% if form.non_field_errors %}
-                                <div class="bg-red-50 border border-red-300 text-red-800 px-4 py-3 rounded-lg">
+                                <div class="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg">
                                     {% for error in form.non_field_errors %}
                                         <p class="text-sm">{{ error }}</p>
                                     {% endfor %}
@@ -58,32 +58,32 @@
                             <!-- Template Selection -->
                             {% if templates %}
                             <div>
-                                <label for="id_use_template" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Use Saved Template <span class="text-gray-400">(Optional)</span>
+                                <label for="id_use_template" class="block text-sm font-semibold text-foreground mb-2">
+                                    Use Saved Template <span class="text-muted-foreground">(Optional)</span>
                                 </label>
-                                <select id="id_use_template" name="use_template" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition">
+                                <select id="id_use_template" name="use_template" class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-background text-foreground">
                                     <option value="">Select a template...</option>
                                     {% for template in templates %}
                                         <option value="{{ template.id }}">{{ template.name }}</option>
                                     {% endfor %}
                                 </select>
-                                <p class="mt-1 text-xs text-gray-500">Selecting a template will populate the message field</p>
+                                <p class="mt-1 text-xs text-muted-foreground">Selecting a template will populate the message field</p>
                                 {% if form.use_template.errors %}
-                                    <p class="mt-1 text-xs text-red-500">{{ form.use_template.errors }}</p>
+                                    <p class="mt-1 text-xs text-destructive">{{ form.use_template.errors }}</p>
                                 {% endif %}
                             </div>
                             {% endif %}
 
                             <!-- Message Content -->
                             <div>
-                                <label for="id_content" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Message Content <span class="text-red-500">*</span>
+                                <label for="id_content" class="block text-sm font-semibold text-foreground mb-2">
+                                    Message Content <span class="text-destructive">*</span>
                                 </label>
-                                <textarea id="id_content" name="content" rows="6" maxlength="1600" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition resize-none" placeholder="Enter your message (max 1600 characters)">{{ form.content.value|default:'' }}</textarea>
+                                <textarea id="id_content" name="content" rows="6" maxlength="1600" class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition resize-none bg-background text-foreground" placeholder="Enter your message (max 1600 characters)">{{ form.content.value|default:'' }}</textarea>
                                 <div class="mt-2 flex justify-between items-center">
-                                    <p class="text-xs text-gray-500" id="char-count">0 / 1600 characters</p>
+                                    <p class="text-xs text-muted-foreground" id="char-count">0 / 1600 characters</p>
                                     {% if form.content.errors %}
-                                        <p class="text-xs text-red-500">{{ form.content.errors }}</p>
+                                        <p class="text-xs text-destructive">{{ form.content.errors }}</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -91,10 +91,10 @@
                             <!-- Send Via & Schedule -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="id_message_type" class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Send Via <span class="text-red-500">*</span>
+                                    <label for="id_message_type" class="block text-sm font-semibold text-foreground mb-2">
+                                        Send Via <span class="text-destructive">*</span>
                                     </label>
-                                    <select id="id_message_type" name="message_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition">
+                                    <select id="id_message_type" name="message_type" class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-background text-foreground">
                                         <option value="">Select a method...</option>
                                         {% for value, label in form.message_type.field.choices %}
                                             {% if value %}
@@ -103,17 +103,17 @@
                                         {% endfor %}
                                     </select>
                                     {% if form.message_type.errors %}
-                                        <p class="mt-1 text-xs text-red-500">{{ form.message_type.errors }}</p>
+                                        <p class="mt-1 text-xs text-destructive">{{ form.message_type.errors }}</p>
                                     {% endif %}
                                 </div>
                                 <div>
-                                    <label for="id_scheduled_for" class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Schedule <span class="text-gray-400">(Optional)</span>
+                                    <label for="id_scheduled_for" class="block text-sm font-semibold text-foreground mb-2">
+                                        Schedule <span class="text-muted-foreground">(Optional)</span>
                                     </label>
-                                    <input id="id_scheduled_for" name="scheduled_for" type="datetime-local" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition" {% if form.scheduled_for.value %}value="{{ form.scheduled_for.value|date:'Y-m-dTH:i' }}"{% endif %}>
-                                    <p class="mt-1 text-xs text-gray-500">Leave blank to send immediately</p>
+                                    <input id="id_scheduled_for" name="scheduled_for" type="datetime-local" class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-background text-foreground" {% if form.scheduled_for.value %}value="{{ form.scheduled_for.value|date:'Y-m-dTH:i' }}"{% endif %}>
+                                    <p class="mt-1 text-xs text-muted-foreground">Leave blank to send immediately</p>
                                     {% if form.scheduled_for.errors %}
-                                        <p class="mt-1 text-xs text-red-500">{{ form.scheduled_for.errors }}</p>
+                                        <p class="mt-1 text-xs text-destructive">{{ form.scheduled_for.errors }}</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -121,15 +121,15 @@
                             <!-- Buttons -->
                             <div class="flex gap-3 pt-4">
                                 {% if subscriber_count > 0 %}
-                                    <button type="submit" class="flex-1 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-95">
+                                    <button type="submit" class="flex-1 btn-primary">
                                         Send Message
                                     </button>
                                 {% else %}
-                                    <button type="submit" class="flex-1 bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-lg cursor-not-allowed" disabled>
+                                    <button type="submit" class="flex-1 bg-muted text-muted-foreground font-bold py-3 px-6 rounded-lg cursor-not-allowed" disabled>
                                         Send Message
                                     </button>
                                 {% endif %}
-                                <a href="{% url 'messaging:message_list' %}" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg transition text-center">
+                                <a href="{% url 'messaging:message_list' %}" class="flex-1 btn-secondary text-center">
                                     View History
                                 </a>
                             </div>
@@ -142,36 +142,35 @@
             <div class="space-y-6">
                 <!-- QR Code Card -->
                 {% if qr_code %}
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-r from-green-400 to-green-500 px-6 py-4">
-                        <h3 class="text-white font-bold text-lg">Subscription QR Code</h3>
+                <div class="card-base border border-border overflow-hidden">
+                    <div class="bg-primary/10 px-6 py-4">
+                        <h3 class="text-primary font-bold font-serif text-lg">Subscription QR Code</h3>
                     </div>
                     <div class="p-6 text-center">
-                        <img src="{{ qr_code }}" alt="Subscription QR Code" class="mx-auto border-4 border-gray-200 rounded-lg p-2">
-                        <p class="text-xs text-gray-600 mt-4">Scan this QR code to subscribe</p>
-                        <p class="text-xs text-gray-500 mt-2">Share with customers to grow your subscriber list</p>
+                        <img src="{{ qr_code }}" alt="Subscription QR Code" class="mx-auto border-2 border-border rounded-lg p-2">
+                        <p class="text-xs text-muted-foreground mt-4">Scan this QR code to subscribe</p>
+                        <p class="text-xs text-muted-foreground/70 mt-2">Share with customers to grow your subscriber list</p>
                     </div>
                 </div>
                 {% endif %}
 
                 <!-- Quick Info Card -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-r from-amber-200 to-amber-300 px-6 py-4">
-                        <h3 class="text-gray-800 font-bold text-lg">Quick Info</h3>
+                <div class="card-base border border-border overflow-hidden">
+                    <div class="bg-secondary/10 px-6 py-4">
+                        <h3 class="text-secondary font-bold font-serif text-lg">Quick Info</h3>
                     </div>
                     <div class="p-6 space-y-4">
                         <div>
-                            <p class="text-gray-600 text-sm font-medium">Active Subscribers</p>
-                            <p class="text-3xl font-bold text-orange-600">{{ subscriber_count }}</p>
+                            <p class="text-muted-foreground text-sm font-medium">Active Subscribers</p>
+                            <p class="text-3xl font-bold text-secondary">{{ subscriber_count }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-600 text-sm font-medium">Saved Templates</p>
-                            <p class="text-3xl font-bold text-orange-600">{{ templates.count }}</p>
+                            <p class="text-muted-foreground text-sm font-medium">Saved Templates</p>
+                            <p class="text-3xl font-bold text-secondary">{{ templates.count }}</p>
                         </div>
-                        <hr class="my-4">
-                        <div>
-                            <p class="font-bold text-gray-700 text-sm mb-3">💡 Message Tips:</p>
-                            <ul class="text-xs text-gray-600 space-y-2">
+                        <div style="border-top: 1px solid var(--color-border); margin: 1rem 0; padding-top: 1rem;">
+                            <p class="font-bold text-foreground text-sm mb-3">💡 Message Tips:</p>
+                            <ul class="text-xs text-muted-foreground space-y-2">
                                 <li>✓ Keep SMS under 160 characters</li>
                                 <li>✓ Use WhatsApp for rich formatting</li>
                                 <li>✓ Schedule for optimal timing</li>
@@ -183,16 +182,16 @@
 
                 <!-- Templates Card -->
                 {% if templates %}
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-400 to-blue-500 px-6 py-4">
-                        <h3 class="text-white font-bold text-lg">Your Templates</h3>
+                <div class="card-base border border-border overflow-hidden">
+                    <div class="bg-primary/10 px-6 py-4">
+                        <h3 class="text-primary font-bold font-serif text-lg">Your Templates</h3>
                     </div>
-                    <div class="divide-y">
+                    <div style="border-top: 1px solid var(--color-border);">
                         {% for template in templates %}
-                        <div class="p-4 hover:bg-gray-50 transition cursor-pointer template-item" data-template-id="{{ template.id }}">
-                            <p class="text-xs text-gray-500 font-medium">{{ template.get_category_display }}</p>
-                            <p class="text-sm font-bold text-gray-800 mt-1">{{ template.name }}</p>
-                            <p class="text-xs text-gray-600 line-clamp-2 mt-1">{{ template.content }}</p>
+                        <div class="p-4 hover:bg-muted/50 transition cursor-pointer template-item border-b border-border/50 last:border-b-0" data-template-id="{{ template.id }}">
+                            <p class="text-xs text-muted-foreground font-medium">{{ template.get_category_display }}</p>
+                            <p class="text-sm font-bold text-foreground mt-1">{{ template.name }}</p>
+                            <p class="text-xs text-muted-foreground line-clamp-2 mt-1">{{ template.content }}</p>
                         </div>
                         {% endfor %}
                     </div>
@@ -209,9 +208,9 @@ document.getElementById('id_content').addEventListener('input', function() {
     document.getElementById('char-count').textContent = charCount + ' / 1600 characters';
     
     if (charCount > 1600) {
-        this.classList.add('border-red-500');
+        this.style.borderColor = 'var(--color-destructive)';
     } else {
-        this.classList.remove('border-red-500');
+        this.style.borderColor = '';
     }
 });
 
