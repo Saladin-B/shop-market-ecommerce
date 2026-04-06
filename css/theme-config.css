@@ -468,3 +468,109 @@ body::before {
 body::before {
   pointer-events: none !important;
 }
+
+/**
+ * Bootstrap Color Overrides - Restore Original Theme
+ * Purpose: Override Bootstrap's default colors to maintain custom design system
+ * While keeping Bootstrap modal functionality
+ */
+
+/* Restore body background color */
+body, html {
+  background-color: var(--color-background) !important;
+  color: var(--color-foreground) !important;
+}
+
+/* Override Bootstrap table colors */
+.table {
+  background-color: transparent !important;
+  color: var(--color-foreground) !important;
+}
+
+.table thead {
+  background-color: #f0ebe5 !important;
+}
+
+.table thead th {
+  color: var(--color-foreground) !important;
+  border-color: var(--color-border) !important;
+}
+
+.table tbody tr {
+  border-color: var(--color-border) !important;
+}
+
+.table tbody td {
+  color: var(--color-foreground) !important;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Override Bootstrap badge/badge colors */
+.badge {
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-foreground) !important;
+}
+
+/* Override Bootstrap button styling */
+.btn {
+  border-radius: 9999px !important;
+}
+
+.btn-primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary-foreground) !important;
+}
+
+.btn-primary:hover {
+  background-color: rgba(93, 112, 82, 0.8) !important;
+  border-color: rgba(93, 112, 82, 0.8) !important;
+}
+
+/* Override Bootstrap modal backdrop to reduce dimming */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Override Bootstrap modal content styling */
+.modal-content {
+  background-color: #FEFEFA !important;
+  border: 1px solid rgba(222, 216, 207, 0.5) !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+.modal-header {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-border) !important;
+}
+
+.modal-title {
+  color: var(--color-primary-foreground) !important;
+}
+
+.modal-body {
+  background-color: #FEFEFA !important;
+  color: var(--color-foreground) !important;
+}
+
+.modal-footer {
+  background-color: #F0EBE5 !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Override form controls */
+.form-control, .form-select {
+  background-color: #FEFEFA !important;
+  color: var(--color-foreground) !important;
+  border-color: var(--color-border) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: #FEFEFA !important;
+  color: var(--color-foreground) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(93, 112, 82, 0.25) !important;
+}
