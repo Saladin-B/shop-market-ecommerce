@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Message Details{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-4xl font-bold text-gray-800" style="font-family: 'Fraunces', serif;">Message Details</h1>
+            <a href="{% url 'messaging:message_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-200">
+                ← Back to Messages
+            </a>
+        </div>
+
+        <!-- Message Details Card -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-8 space-y-6">
+                
+                <!-- Message Content -->
+                <div>
+                    <h2 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-3">Message Content</h2>
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-orange-500">
+                        <p class="text-gray-800 whitespace-pre-wrap text-base leading-relaxed">{{ message.content }}</p>
+                    </div>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">Message Type</h3>
+                        <p class="text-lg text-gray-800">
+                            <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ message.get_message_type_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">Status</h3>
+                        <p class="text-lg text-gray-800">
+                            {% if message.status == 'sent' %}
+                                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Sent</span>
+                            {% elif message.status == 'sending' %}
+                                <span class="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">Sending</span>
+                            {% elif message.status == 'scheduled' %}
+                                <span class="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">Scheduled</span>
+                            {% elif message.status == 'draft' %}
+                                <span class="inline-block bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-semibold">Draft</span>
+                            {% elif message.status == 'failed' %}
+                                <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Failed</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timestamps -->
+                <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-200">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">Created At</h3>
+                        <p class="text-gray-800">{{ message.created_at|date:"M d, Y H:i" }}</p>
+                    </div>
+                    {% if message.sent_at %}
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">Sent At</h3>
+                        <p class="text-gray-800">{{ message.sent_at|date:"M d, Y H:i" }}</p>
+                    </div>
+                    {% elif message.scheduled_for %}
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-2">Scheduled For</h3>
+                        <p class="text-gray-800">{{ message.scheduled_for|date:"M d, Y H:i" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Delivery Report -->
+                {% if message.delivery_report %}
+                <div class="pt-4 border-t border-gray-200">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-4">Delivery Report</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <p class="text-sm text-blue-600 font-semibold">Total Sent</p>
+                            <p class="text-3xl font-bold text-blue-800 mt-2">{{ message.delivery_report.total_sent }}</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <p class="text-sm text-green-600 font-semibold">Successful</p>
+                            <p class="text-3xl font-bold text-green-800 mt-2">{{ message.delivery_report.successful }}</p>
+                        </div>
+                        <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                            <p class="text-sm text-red-600 font-semibold">Failed</p>
+                            <p class="text-3xl font-bold text-red-800 mt-2">{{ message.delivery_report.failed }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Actions -->
+                <div class="pt-4 border-t border-gray-200 flex gap-3">
+                    <a href="{% url 'messaging:message_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

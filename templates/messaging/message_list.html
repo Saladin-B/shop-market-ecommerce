@@ -73,44 +73,11 @@
                                 {% endif %}
                             </td>
                             <td class="px-6 py-4 text-sm">
-                                <button type="button" class="text-orange-500 hover:text-orange-700 font-semibold text-sm" data-bs-toggle="modal" 
-                                        data-bs-target="#messageModal{{ message.id }}" title="View Details">
+                                <a href="{% url 'messaging:message_detail' message.id %}" class="text-orange-500 hover:text-orange-700 font-semibold text-sm" title="View Details">
                                     View
-                                </button>
+                                </a>
                             </td>
                         </tr>
-
-                        <!-- Modal for message details -->
-                        <div class="modal fade" id="messageModal{{ message.id }}" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Message Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><strong>Content:</strong></p>
-                                        <p class="bg-gray-100 p-3 rounded">{{ message.content }}</p>
-                                        
-                                        <p><strong>Type:</strong> {{ message.get_message_type_display }}</p>
-                                        <p><strong>Status:</strong> {{ message.get_status_display }}</p>
-                                        
-                                        {% if message.scheduled_for %}
-                                        <p><strong>Scheduled for:</strong> {{ message.scheduled_for }}</p>
-                                        {% endif %}
-                                        
-                                        {% if message.delivery_report %}
-                                        <p><strong>Delivery Report:</strong></p>
-                                        <ul>
-                                            <li>Total: {{ message.delivery_report.total_sent }}</li>
-                                            <li>Successful: {{ message.delivery_report.successful }}</li>
-                                            <li>Failed: {{ message.delivery_report.failed }}</li>
-                                        </ul>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         {% endfor %}
                     </tbody>
                 </table>
