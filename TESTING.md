@@ -118,14 +118,23 @@
 
 ---
 
-### 7. **Messaging System**
+### 7. **Messaging System & Direct Messages**
 - [x] Messages navbar link accessible for authenticated users
 - [x] Message list page loading
 - [x] Message functionality available to all user roles
 - [x] Messages link properly routed
+- [x] Users can ONLY view messages where they are sender or recipient
+- [x] Users can ONLY delete their own sent messages
+- [x] Users can ONLY delete messages they received
+- [x] Error message displays if user tries to delete other's messages
+- [x] Unauthorized access attempts redirected to message list
+- [x] Message deletion confirmed with success message
 
 **Status:** ✅ WORKING  
-**Last Verified:** v195 - Heroku Deployment
+**Access Control:** `@buyer_messages_only` decorator  
+**Files Modified:** `messaging/views.py`
+
+**Last Verified:** v196 - Heroku Deployment
 
 ---
 
@@ -159,7 +168,7 @@
 - [x] Custom domain configured
 
 **Status:** ✅ WORKING  
-**Current Release:** v195  
+**Current Release:** v196  
 **Server:** Heroku-24 Stack  
 **Python Version:** 3.14.0  
 **Dyno Type:** web  
@@ -194,11 +203,11 @@
 | Navigation | 9 | 9 | 0 | 100% ✅ |
 | Footer | 4 | 4 | 0 | 100% ✅ |
 | Static Assets | 8 | 8 | 0 | 100% ✅ |
-| Messaging | 4 | 4 | 0 | 100% ✅ |
+| Messaging | 10 | 10 | 0 | 100% ✅ |
 | Stripe | 7 | 7 | 0 | 100% ✅ |
 | Deployment | 10 | 10 | 0 | 100% ✅ |
 | Error Handling | 8 | 8 | 0 | 100% ✅ |
-| **TOTAL** | **76** | **76** | **0** | **100% ✅** |
+| **TOTAL** | **79** | **79** | **0** | **100% ✅** |
 
 ---
 
@@ -208,13 +217,14 @@
 
 **Current Status:** ✅ LIVE & OPERATIONAL
 
-**Uptime:** Stable since v195 deployment
+**Uptime:** Stable since v196 deployment
 
 ---
 
 ## 🔄 Git Commits - Recent Changes
 
 ```
+89f9bf3 - Add message access control - users can only view and delete their own messages
 0da3d70 - Hide products and cart navbar links from shop accounts
 28fcb87 - Add missing view functions for product detail and checkout
 28ca821 - Fix: Handle missing ShopProfile and make SITE_URL dynamic for production
@@ -280,5 +290,5 @@ b83b294 - Add Aura logo to registration choice page
 
 ---
 
-**Last Updated:** April 6, 2026 - 12:35 UTC  
+**Last Updated:** April 6, 2026 - 12:40 UTC  
 **Next Review:** Upon next major feature deployment
