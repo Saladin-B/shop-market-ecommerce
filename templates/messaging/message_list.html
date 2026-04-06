@@ -84,27 +84,27 @@
                         <div class="modal fade" id="messageModal{{ message.id }}" tabindex="-1" style="--bs-modal-bg: var(--color-background); --bs-modal-border-color: var(--color-border);">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content" style="background-color: var(--color-background); border: 1px solid var(--color-border); border-radius: 16px;">
-                                    <div class="modal-header" style="background-color: var(--color-muted); border-bottom: 1px solid var(--color-border); border-radius: 16px 16px 0 0; padding: 1.5rem;">
+                                    <div class="modal-header" style="background-color: var(--color-muted); border-bottom: 1px solid var(--color-border); border-radius: 16px 16px 0 0; padding: 1rem;">
                                         <h5 class="modal-title font-serif text-foreground font-bold">Message Details</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(0.2)"></button>
                                     </div>
-                                    <div class="modal-body" style="padding: 1.5rem;">
-                                        <div class="mb-6">
-                                            <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-3">Message Content</h6>
-                                            <div class="bg-muted p-4 rounded-lg border border-border">
-                                                <p class="text-foreground whitespace-pre-wrap">{{ message.content }}</p>
+                                    <div class="modal-body" style="padding: 1rem;">
+                                        <div class="mb-4">
+                                            <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-2">Message Content</h6>
+                                            <div class="bg-muted p-3 rounded-lg border border-border">
+                                                <p class="text-foreground whitespace-pre-wrap text-sm">{{ message.content }}</p>
                                             </div>
                                         </div>
 
-                                        <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div class="grid grid-cols-2 gap-3 mb-4">
                                             <div>
-                                                <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-2">Type</h6>
-                                                <span class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold border border-primary/20">
+                                                <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Type</h6>
+                                                <span class="inline-block bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-semibold border border-primary/20">
                                                     {{ message.get_message_type_display }}
                                                 </span>
                                             </div>
                                             <div>
-                                                <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-2">Status</h6>
+                                                <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Status</h6>
                                                 {% if message.status == 'sent' %}
                                                     <span class="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full text-xs font-semibold border border-primary/20">Sent</span>
                                                 {% elif message.status == 'sending' %}
@@ -119,41 +119,41 @@
                                             </div>
                                         </div>
 
-                                        <div style="padding-top: 1.5rem; border-top: 1px solid var(--color-border); margin-top: 1.5rem;">
-                                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div style="padding-top: 1rem; border-top: 1px solid var(--color-border); margin-top: 1rem;">
+                                            <div class="grid grid-cols-2 gap-3 mb-4">
                                                 <div>
-                                                    <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Created</h6>
-                                                    <p class="text-foreground">{{ message.created_at|date:"M d, Y H:i" }}</p>
+                                                    <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Created</h6>
+                                                    <p class="text-foreground text-sm">{{ message.created_at|date:"M d, Y H:i" }}</p>
                                                 </div>
                                                 {% if message.sent_at %}
                                                 <div>
-                                                    <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Sent</h6>
-                                                    <p class="text-foreground">{{ message.sent_at|date:"M d, Y H:i" }}</p>
+                                                    <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Sent</h6>
+                                                    <p class="text-foreground text-sm">{{ message.sent_at|date:"M d, Y H:i" }}</p>
                                                 </div>
                                                 {% elif message.scheduled_for %}
                                                 <div>
-                                                    <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Scheduled For</h6>
-                                                    <p class="text-foreground">{{ message.scheduled_for|date:"M d, Y H:i" }}</p>
+                                                    <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-1">Scheduled For</h6>
+                                                    <p class="text-foreground text-sm">{{ message.scheduled_for|date:"M d, Y H:i" }}</p>
                                                 </div>
                                                 {% endif %}
                                             </div>
                                         </div>
 
                                         {% if message.delivery_report %}
-                                        <div style="padding-top: 1.5rem; border-top: 1px solid var(--color-border); margin-top: 1.5rem;">
-                                            <h6 class="text-sm font-semibold font-serif text-foreground uppercase tracking-wide mb-3">Delivery Report</h6>
-                                            <div class="grid grid-cols-3 gap-3">
-                                                <div class="bg-primary/10 rounded p-3 border border-primary/20 text-center">
+                                        <div style="padding-top: 1rem; border-top: 1px solid var(--color-border); margin-top: 1rem;">
+                                            <h6 class="text-xs font-semibold font-serif text-foreground uppercase tracking-wide mb-2">Delivery Report</h6>
+                                            <div class="grid grid-cols-3 gap-2">
+                                                <div class="bg-primary/10 rounded p-2 border border-primary/20 text-center">
                                                     <p class="text-xs text-primary font-semibold mb-1">Total</p>
-                                                    <p class="text-2xl font-bold text-primary">{{ message.delivery_report.total_sent }}</p>
+                                                    <p class="text-xl font-bold text-primary">{{ message.delivery_report.total_sent }}</p>
                                                 </div>
-                                                <div class="bg-primary/10 rounded p-3 border border-primary/20 text-center">
+                                                <div class="bg-primary/10 rounded p-2 border border-primary/20 text-center">
                                                     <p class="text-xs text-primary font-semibold mb-1">Success</p>
-                                                    <p class="text-2xl font-bold text-primary">{{ message.delivery_report.successful }}</p>
+                                                    <p class="text-xl font-bold text-primary">{{ message.delivery_report.successful }}</p>
                                                 </div>
-                                                <div class="bg-destructive/10 rounded p-3 border border-destructive/20 text-center">
+                                                <div class="bg-destructive/10 rounded p-2 border border-destructive/20 text-center">
                                                     <p class="text-xs text-destructive font-semibold mb-1">Failed</p>
-                                                    <p class="text-2xl font-bold text-destructive">{{ message.delivery_report.failed }}</p>
+                                                    <p class="text-xl font-bold text-destructive">{{ message.delivery_report.failed }}</p>
                                                 </div>
                                             </div>
                                         </div>
