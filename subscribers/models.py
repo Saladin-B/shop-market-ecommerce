@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
 from accounts.models import ShopProfile
+from django.conf import settings
+from cryptography.fernet import Fernet
+import hashlib
 
 
 MONTH_CHOICES = [
@@ -26,6 +29,7 @@ class Subscriber(models.Model):
     is_active = models.BooleanField(default=True)
     sms_consent = models.BooleanField(default=False)
     whatsapp_consent = models.BooleanField(default=False)
+    unsubscribed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         # Prevent duplicate subscriptions per shop
@@ -33,3 +37,30 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return f"Subscriber for {self.shop.shop_name} (subscribed {self.subscribed_at.date()})"
+
+    @staticmethod
+    def encrypt_phone(phone_number):
+        """Encrypt phone number using Fernet encryption."""
+        try:
+            cipher = Fernet(settings.ENCRYPTION_KEY.encode())
+            encrypted = cipher.encrypt(phone_number.encode())
+            return encrypted.decode()
+        except Exception:
+            # Fallback if encryption fails
+            return phone_number
+
+    @staticmethod
+    def decrypt_phone(encrypted_phone):
+        """Decrypt phone number."""
+        try:
+            cipher = Fernet(settings.ENCRYPTION_KEY.encode())
+            decrypted = cipher.decrypt(encrypted_phone.encode())
+            return decrypted.decode()
+        except Exception:
+            # Fallback if decryption fails
+            return encrypted_phone
+
+    @staticmethod
+    def hash_phone(phone_number):
+        """Create a one-way hash of phone number for lookup."""
+        return hashlib.sha256(phone_number.encode()).hexdigest()

@@ -22,12 +22,17 @@ def subscribe_page(request, shop_id):
             phone = request.POST.get('phone_number')
             birth_month = form.cleaned_data['birth_month']
             
-            # Encrypt phone before saving
+            # Encrypt and hash phone before saving
             encrypted_phone = Subscriber.encrypt_phone(phone)
+            phone_hash = Subscriber.hash_phone(phone)
+            
             subscriber, created = Subscriber.objects.get_or_create(
                 shop=shop_profile,
-                phone_number_encrypted=encrypted_phone,
-                defaults={'birth_month': birth_month}
+                phone_number_hash=phone_hash,
+                defaults={
+                    'phone_number_encrypted': encrypted_phone,
+                    'birth_month': birth_month
+                }
             )
             
             if not created:
