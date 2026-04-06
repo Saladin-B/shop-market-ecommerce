@@ -28,9 +28,13 @@ def products(request):
     """Display all products for buyer accounts only."""
     products = Product.objects.all()
     user_cart = None
-    if request.user.shopprofile:
-        # Get user's first cart (if any)
-        user_cart = Cart.objects.filter(user=request.user).first()
+    try:
+        if request.user.shopprofile:
+            # Get user's first cart (if any)
+            user_cart = Cart.objects.filter(user=request.user).first()
+    except:
+        # User doesn't have a ShopProfile, skip
+        pass
     return render(request, 'products/product_list.html', {
         'products': products,
         'user_cart': user_cart

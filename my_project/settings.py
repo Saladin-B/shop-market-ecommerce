@@ -173,4 +173,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # qr code generation
-SITE_URL = "http://127.0.0.1:8000"
+if DEBUG:
+    SITE_URL = "http://127.0.0.1:8000"
+else:
+    SITE_URL = config('SITE_URL', default='https://my-ecommerce-website.herokuapp.com')
