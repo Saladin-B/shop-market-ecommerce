@@ -179,23 +179,6 @@ def message_list(request):
     })
 
 
-@login_required
-def message_detail(request, message_id):
-    """View detailed information about a specific message."""
-    try:
-        shop_profile = ShopProfile.objects.get(owner=request.user)
-    except ShopProfile.DoesNotExist:
-        django_messages.error(request, 'You must have a shop profile.')
-        return redirect('dashboard:home')
-    
-    message = get_object_or_404(Message, id=message_id, shop_profile=shop_profile)
-    
-    return render(request, 'messaging/message_detail.html', {
-        'message': message,
-        'shop_name': shop_profile.shop_name
-    })
-
-
 def send_message_sync(message):
     """Synchronous message sending (fallback if Celery not available)."""
     try:
