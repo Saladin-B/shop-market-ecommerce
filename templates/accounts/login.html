@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Sign In - Aura{% endblock %}
 
@@ -9,7 +10,9 @@
 
     <div class="w-full max-w-md relative z-10">
         <div class="text-center mb-10">
-            <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 shadow-soft text-2xl"></div>
+            <div class="w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <img src="{% static 'images/logo.svg' %}" alt="Aura Logo" class="w-full h-full object-contain logo-terracotta">
+            </div>
             <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4 font-serif">Welcome Back</h1>
             <p class="text-muted-foreground text-lg">Sign in to your Aura account</p>
         </div>
