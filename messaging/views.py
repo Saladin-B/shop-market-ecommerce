@@ -179,6 +179,23 @@ def message_list(request):
     })
 
 
+@login_required
+@require_http_methods(["POST"])
+def delete_message(request, message_id):
+    """Delete a message from history."""
+    try:
+        shop_profile = ShopProfile.objects.get(owner=request.user)
+    except ShopProfile.DoesNotExist:
+        django_messages.error(request, 'You must have a shop profile.')
+        return redirect('dashboard:home')
+    
+    message = get_object_or_404(Message, id=message_id, shop_profile=shop_profile)
+    message.delete()
+    
+    django_messages.success(request, 'Message deleted successfully!')
+    return redirect('messaging:message_list')
+
+
 def send_message_sync(message):
     """Synchronous message sending (fallback if Celery not available)."""
     try:

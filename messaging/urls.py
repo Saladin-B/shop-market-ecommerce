@@ -11,4 +11,5 @@ urlpatterns = [
     # Message broadcasting
     path('send/', views.send_message, name='send_message'),
     path('history/', views.message_list, name='message_list'),
+    path('delete/<int:message_id>/', views.delete_message, name='delete_message'),
 ]
