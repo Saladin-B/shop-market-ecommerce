@@ -18,9 +18,15 @@
 - [x] Login redirect to dashboard
 - [x] Logout functionality
 - [x] Password reset capability
+- [x] Users can create both buyer and shop accounts with same email/username
+- [x] Login accepts both email and username
+- [x] Account selection page displays when multiple accounts use same email
+- [x] User can choose which account to login as (buyer or shop owner)
+- [x] Proper redirection after selecting account
 
 **Status:** ✅ WORKING  
-**Last Verified:** v195 - Heroku Deployment
+**Latest Feature:** Multi-account selection (v200)  
+**Last Verified:** v200 - Heroku Deployment
 
 ---
 
@@ -171,7 +177,7 @@
 - [x] Custom domain configured
 
 **Status:** ✅ WORKING  
-**Current Release:** v198  
+**Current Release:** v200  
 **Server:** Heroku-24 Stack  
 **Python Version:** 3.14.0  
 **Dyno Type:** web  
@@ -200,7 +206,7 @@
 
 | Category | Total | Passed | Failed | Coverage |
 |----------|-------|--------|--------|----------|
-| Authentication | 8 | 8 | 0 | 100% ✅ |
+| Authentication | 14 | 14 | 0 | 100% ✅ |
 | Branding | 8 | 8 | 0 | 100% ✅ |
 | Access Control | 10 | 10 | 0 | 100% ✅ |
 | Navigation | 9 | 9 | 0 | 100% ✅ |
@@ -210,7 +216,7 @@
 | Stripe | 7 | 7 | 0 | 100% ✅ |
 | Deployment | 10 | 10 | 0 | 100% ✅ |
 | Error Handling | 8 | 8 | 0 | 100% ✅ |
-| **TOTAL** | **79** | **79** | **0** | **100% ✅** |
+| **TOTAL** | **85** | **85** | **0** | **100% ✅** |
 
 ---
 
@@ -220,13 +226,14 @@
 
 **Current Status:** ✅ LIVE & OPERATIONAL
 
-**Uptime:** Stable since v198 deployment
+**Uptime:** Stable since v200 deployment
 
 ---
 
 ## 🔄 Git Commits - Recent Changes
 
 ```
+0a1ce94 - Add account selection on login for users with multiple accounts using same email
 428ab73 - Fix messaging 500 error - use Q objects for proper pagination
 a74d572 - Update TESTING.md: Add message access control verification (v196)
 89f9bf3 - Add message access control - users can only view and delete their own messages
@@ -295,5 +302,5 @@ b83b294 - Add Aura logo to registration choice page
 
 ---
 
-**Last Updated:** April 6, 2026 - 12:55 UTC  
+**Last Updated:** April 6, 2026 - 13:10 UTC  
 **Next Review:** Upon next major feature deployment
