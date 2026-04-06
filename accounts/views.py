@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.http import require_http_methods
 from .forms import BuyerRegistrationForm, ShopOwnerRegistrationForm, CustomerRegistrationForm
+from .models import CustomUser
 from django.http import HttpResponse
 import functools
 
@@ -49,11 +51,31 @@ def login_view(request):
         return redirect('dashboard:home')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        login_input = request.POST.get('username')  # Can be email or username
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        
+        # First, try to authenticate with the input as username
+        user = authenticate(request, username=login_input, password=password)
+        
+        # If that fails, try finding by email and authenticating
+        if user is None:
+            try:
+                user_by_email = CustomUser.objects.get(email=login_input)
+                user = authenticate(request, username=user_by_email.username, password=password)
+            except CustomUser.DoesNotExist:
+                user = None
         
         if user is not None:
+            # Check if user has both buyer and shop accounts with same email
+            accounts_with_email = CustomUser.objects.filter(email=user.email)
+            
+            if accounts_with_email.count() > 1:
+                # Multiple accounts exist - show selection page
+                request.session['temp_user_email'] = user.email
+                request.session['temp_password'] = password
+                return redirect('accounts:select_account', email=user.email)
+            
+            # Single account - proceed with login
             login(request, user)
             messages.success(request, f"Welcome back, {user.username}!")
             # Redirect based on role: buyers go to products, shop owners go to dashboard
@@ -62,9 +84,49 @@ def login_view(request):
             else:
                 return redirect('dashboard:home')
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, "Invalid email/username or password.")
     
     return render(request, 'accounts/login.html')
+
+
+@require_http_methods(["GET", "POST"])
+def select_account(request, email):
+    """Allow user to select which account to login to if they have multiple."""
+    if request.user.is_authenticated:
+        return redirect('dashboard:home')
+    
+    accounts = CustomUser.objects.filter(email=email)
+    
+    if accounts.count() < 2:
+        messages.error(request, "No multiple accounts found for this email.")
+        return redirect('accounts:login')
+    
+    if request.method == 'POST':
+        selected_username = request.POST.get('account')
+        password = request.session.get('temp_password')
+        
+        user = authenticate(request, username=selected_username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.username}!")
+            # Redirect based on role
+            if user.role == 'customer':
+                return redirect('payments:products')
+            else:
+                return redirect('dashboard:home')
+        else:
+            messages.error(request, "Authentication failed. Please try again.")
+            return redirect('accounts:login')
+    
+    # Clear sensitive session data after use
+    if 'temp_password' in request.session:
+        del request.session['temp_password']
+    
+    return render(request, 'accounts/select_account.html', {
+        'email': email,
+        'accounts': accounts
+    })
 
 
 def logout_view(request):
