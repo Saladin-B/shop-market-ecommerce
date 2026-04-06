@@ -122,3 +122,38 @@ def my_cart(request):
         return render(request, 'products/empty_cart.html')
     return render(request, 'products/cart.html', {'cart': cart})
 
+
+@buyer_only
+def product_detail(request, product_id):
+    """Display product detail page (buyer accounts only)."""
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'products/product_detail.html', {'product': product})
+
+
+@buyer_only
+def create_checkout_session(request, cart_id):
+    """Create Stripe checkout session (buyer accounts only)."""
+    cart = get_object_or_404(Cart, id=cart_id, user=request.user)
+    # TODO: Implement Stripe checkout session creation
+    return render(request, 'payments/checkout.html', {'cart': cart})
+
+
+@buyer_only
+def checkout_success(request):
+    """Handle successful Stripe payment (buyer accounts only)."""
+    order_id = request.GET.get('order_id')
+    if not order_id:
+        messages.error(request, 'Invalid order.')
+        return redirect('payments:my_cart')
+    
+    # TODO: Implement order processing
+    messages.success(request, 'Payment successful! Thank you for your order.')
+    return render(request, 'payments/success.html')
+
+
+@buyer_only
+def checkout_cancel(request):
+    """Handle cancelled Stripe payment (buyer accounts only)."""
+    messages.info(request, 'Payment was cancelled.')
+    return redirect('payments:my_cart')
+
