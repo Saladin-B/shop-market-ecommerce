@@ -88,6 +88,17 @@ def verify_unsubscribe_token(subscriber, token):
     expected_token = hashlib.sha256(f"{subscriber.id}{subscriber.phone_number_encrypted}".encode()).hexdigest()
     return token == expected_token
 
+def buyer_messages_only(view_func):
+    """Decorator to ensure users only access their own messages."""
+    from functools import wraps
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('accounts:login')
+        return view_func(request, *args, **kwargs)
+    return wrapped_view
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def send_message(request):
@@ -157,41 +168,42 @@ def send_message(request):
 
 
 @login_required
+@buyer_messages_only
 def message_list(request):
-    """View message sending history."""
-    try:
-        shop_profile = ShopProfile.objects.get(owner=request.user)
-    except ShopProfile.DoesNotExist:
-        django_messages.error(request, 'You must have a shop profile.')
-        return redirect('dashboard:home')
+    """View user's personal messages (received and sent)."""
+    # Get DirectMessages where user is sender or recipient
+    received_messages = DirectMessage.objects.filter(recipient=request.user).order_by('-created_at')
+    sent_messages = DirectMessage.objects.filter(sender=request.user).order_by('-created_at')
     
-    messages_sent = shop_profile.messages.all().order_by('-created_at')
+    # Combine and sort
+    all_messages = list(received_messages) + list(sent_messages)
+    all_messages.sort(key=lambda x: x.created_at, reverse=True)
     
     # Paginate results
     from django.core.paginator import Paginator
-    paginator = Paginator(messages_sent, 10)
+    paginator = Paginator(all_messages, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'messaging/message_list.html', {
         'page_obj': page_obj,
-        'shop_name': shop_profile.shop_name
+        'page_title': 'My Messages'
     })
 
 
 @login_required
 @require_http_methods(["POST"])
+@buyer_messages_only
 def delete_message(request, message_id):
-    """Delete a message from history."""
-    try:
-        shop_profile = ShopProfile.objects.get(owner=request.user)
-    except ShopProfile.DoesNotExist:
-        django_messages.error(request, 'You must have a shop profile.')
-        return redirect('dashboard:home')
+    """Delete a message (only if user is sender or recipient)."""
+    message = get_object_or_404(DirectMessage, id=message_id)
     
-    message = get_object_or_404(Message, id=message_id, shop_profile=shop_profile)
+    # Only allow sender or recipient to delete
+    if message.sender != request.user and message.recipient != request.user:
+        django_messages.error(request, 'You cannot delete this message.')
+        return redirect('messaging:message_list')
+    
     message.delete()
-    
     django_messages.success(request, 'Message deleted successfully!')
     return redirect('messaging:message_list')
 
