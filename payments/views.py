@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from accounts.models import ShopProfile
 from .models import Product, Cart, CartItem, Order, OrderItem
 import stripe
@@ -204,10 +206,57 @@ def checkout_success(request):
         order.status = 'completed'
         order.save()
         
+        # Send confirmation email
+        try:
+            subject = f'Order Confirmation #{order.id} - Aura'
+            context = {
+                'order': order,
+                'customer_name': request.user.first_name or request.user.username,
+                'customer_email': request.user.email,
+                'shop_name': order.shop.shop_name,
+                'total_amount': order.total_amount,
+            }
+            
+            # Create email body
+            email_body = f"""
+Hello {context['customer_name']},
+
+Thank you for your purchase at {context['shop_name']}!
+
+Order Details:
+- Order ID: #{order.id}
+- Total Amount: £{order.total_amount}
+- Items Count: {order.items_count}
+- Order Date: {order.created_at.strftime('%B %d, %Y')}
+
+Items Ordered:
+"""
+            for item in order.items.all():
+                email_body += f"\n- {item.product.name} (Qty: {item.quantity}) - £{item.price * item.quantity}"
+            
+            email_body += f"""
+
+Your order is being prepared and will be shipped soon.
+
+Best regards,
+The Aura Team
+"""
+            
+            send_mail(
+                subject,
+                email_body,
+                settings.DEFAULT_FROM_EMAIL or 'noreply@aura.com',
+                [request.user.email],
+                fail_silently=True
+            )
+        except Exception as e:
+            # Log error but don't fail the checkout success
+            print(f'Error sending confirmation email: {str(e)}')
+        
         # Clear cart
         Cart.objects.filter(user=request.user, shop=order.shop).delete()
         
-        messages.success(request, 'Payment successful! Thank you for your order.')
+        messages.success(request, 'Payment successful! Thank you for your order. A confirmation email has been sent.')
         return render(request, 'payments/success.html', {'order': order})
         
     except Order.DoesNotExist:
