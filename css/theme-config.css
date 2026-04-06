@@ -450,3 +450,21 @@ body::before {
 .noise-overlay {
   background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');
 }
+
+/**
+ * Bootstrap Modal Z-Index Fix
+ * Purpose: Ensure modal backdrop and modal content appear above navbar
+ * Issue: Navbar has z-[100], grain overlay has z-index: 9999, causing navbar to appear on top
+ */
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+}
+
+/* Ensure grain texture doesn't interfere with modals */
+body::before {
+  pointer-events: none !important;
+}
