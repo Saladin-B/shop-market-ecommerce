@@ -120,7 +120,7 @@
 
 ### 7. **Messaging System & Direct Messages**
 - [x] Messages navbar link accessible for authenticated users
-- [x] Message list page loading
+- [x] Message list page loading (FIXED: Now uses Q objects for proper QuerySet pagination)
 - [x] Message functionality available to all user roles
 - [x] Messages link properly routed
 - [x] Users can ONLY view messages where they are sender or recipient
@@ -129,12 +129,15 @@
 - [x] Error message displays if user tries to delete other's messages
 - [x] Unauthorized access attempts redirected to message list
 - [x] Message deletion confirmed with success message
+- [x] Pagination works correctly with DirectMessage QuerySet
 
-**Status:** ✅ WORKING  
+**Status:** ✅ WORKING (BUG FIX: v198)  
+**Issue Fixed:** 500 error caused by combining QuerySets into Python list for pagination  
+**Solution:** Changed to use Q objects for proper QuerySet filtering  
 **Access Control:** `@buyer_messages_only` decorator  
 **Files Modified:** `messaging/views.py`
 
-**Last Verified:** v196 - Heroku Deployment
+**Last Verified:** v198 - Heroku Deployment
 
 ---
 
@@ -168,7 +171,7 @@
 - [x] Custom domain configured
 
 **Status:** ✅ WORKING  
-**Current Release:** v196  
+**Current Release:** v198  
 **Server:** Heroku-24 Stack  
 **Python Version:** 3.14.0  
 **Dyno Type:** web  
@@ -217,13 +220,15 @@
 
 **Current Status:** ✅ LIVE & OPERATIONAL
 
-**Uptime:** Stable since v196 deployment
+**Uptime:** Stable since v198 deployment
 
 ---
 
 ## 🔄 Git Commits - Recent Changes
 
 ```
+428ab73 - Fix messaging 500 error - use Q objects for proper pagination
+a74d572 - Update TESTING.md: Add message access control verification (v196)
 89f9bf3 - Add message access control - users can only view and delete their own messages
 0da3d70 - Hide products and cart navbar links from shop accounts
 28fcb87 - Add missing view functions for product detail and checkout
@@ -290,5 +295,5 @@ b83b294 - Add Aura logo to registration choice page
 
 ---
 
-**Last Updated:** April 6, 2026 - 12:40 UTC  
+**Last Updated:** April 6, 2026 - 12:55 UTC  
 **Next Review:** Upon next major feature deployment
