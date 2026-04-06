@@ -4,10 +4,11 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages as django_messages
 from django.utils import timezone
+from django.db.models import Q
 import hashlib
 from accounts.models import ShopProfile
 from subscribers.models import Subscriber
-from .models import Message, DeliveryReport
+from .models import Message, DeliveryReport, DirectMessage
 from .forms import SubscriberForm, MessageForm
 
 
@@ -171,17 +172,15 @@ def send_message(request):
 @buyer_messages_only
 def message_list(request):
     """View user's personal messages (received and sent)."""
-    # Get DirectMessages where user is sender or recipient
-    received_messages = DirectMessage.objects.filter(recipient=request.user).order_by('-created_at')
-    sent_messages = DirectMessage.objects.filter(sender=request.user).order_by('-created_at')
-    
-    # Combine and sort
-    all_messages = list(received_messages) + list(sent_messages)
-    all_messages.sort(key=lambda x: x.created_at, reverse=True)
+    # Use Q objects to get messages where user is sender OR recipient
+    # This creates a proper QuerySet that works with pagination
+    messages_queryset = DirectMessage.objects.filter(
+        Q(recipient=request.user) | Q(sender=request.user)
+    ).order_by('-created_at')
     
     # Paginate results
     from django.core.paginator import Paginator
-    paginator = Paginator(all_messages, 10)
+    paginator = Paginator(messages_queryset, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
